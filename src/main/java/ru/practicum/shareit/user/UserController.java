@@ -12,36 +12,36 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RequestMapping(path = "/users")
 public class UserController {
-    private final UserService userService;
+    private final UserService userServiceImpl;
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public User createNewUser(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+        return userServiceImpl.createUser(user);
     }
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User updateUser(@Valid @PathVariable(value = "userId") Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+        return userServiceImpl.updateUser(id, user);
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId);
+        return userServiceImpl.getUserById(userId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<User> getAllUsers() {
-        return userService.getAllUsers();
+        return userServiceImpl.getAllUsers();
     }
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+        userServiceImpl.deleteUser(userId);
     }
 }

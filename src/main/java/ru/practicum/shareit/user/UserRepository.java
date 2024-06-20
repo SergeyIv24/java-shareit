@@ -14,6 +14,4 @@ public interface UserRepository {
     Collection<User> getAllUsers();
 
     void deleteUser(Long userId);
-
-
 }

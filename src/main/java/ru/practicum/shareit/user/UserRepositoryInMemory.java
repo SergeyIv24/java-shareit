@@ -9,7 +9,7 @@ import java.util.*;
 @Slf4j
 public class UserRepositoryInMemory implements UserRepository {
     private static Long userAmount = 0L;
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     @Override
     public User addToStorage(User user) {
