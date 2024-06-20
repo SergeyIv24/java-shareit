@@ -5,10 +5,9 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 @Component
-public final class ItemMapper{
+public final class ItemMapper {
     public static ItemDto mapToItemDto(Item item) {
         ItemDto itemDto = new ItemDto();
-        //itemDto.setItemId(item.getItemId());
         itemDto.setName(item.getName());
         itemDto.setDescription(itemDto.getDescription());
         itemDto.setAvailable(item.getAvailable());
