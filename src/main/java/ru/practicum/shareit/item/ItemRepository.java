@@ -7,13 +7,13 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ItemRepository {
-    Item addItem(Long userId, ItemDto itemDto);
+    ItemDto addItem(Long userId, ItemDto itemDto);
 
-    Item updateItem(Long itemId, Item item);
+    ItemDto updateItem(Long itemId, ItemDto item);
 
     Optional<Item> getItemById(Long itemId);
 
-    Collection<Item> getMyItems(Long userId);
+    Collection<ItemDto> getMyItems(Long userId);
 
-    Collection<Item> searchByText(String text);
+    Collection<ItemDto> searchByText(String text);
 }

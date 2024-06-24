@@ -17,34 +17,36 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
 
     @Override
-    public Item addItem(Long userId, ItemDto itemDto) {
+    public ItemDto addItem(Long userId, ItemDto itemDto) {
         checkUser(userId);
         return itemRepository.addItem(userId, itemDto);
     }
 
     @Override
-    public Item updateItem(Long itemId, Long ownerId, Item item) {
+    public ItemDto updateItem(Long itemId, Long ownerId, ItemDto item) {
         checkUser(ownerId);
         checkUsersItems(itemId, ownerId);
         return itemRepository.updateItem(itemId, item);
     }
 
     @Override
-    public Optional<Item> getItemById(Long itemId) {
-        return itemRepository.getItemById(itemId);
+    public Optional<ItemDto> getItemById(Long itemId) {
+        return itemRepository
+                .getItemById(itemId)
+                .map(ItemMapper::mapToItemDto);
     }
 
     @Override
-    public Collection<Item> getMyItems(Long userId) {
+    public Collection<ItemDto> getMyItems(Long userId) {
         return itemRepository.getMyItems(userId);
     }
 
     @Override
-    public Collection<Item> searchByRequest(String text) {
+    public Collection<ItemDto> searchByRequest(String text) {
         if (text.isEmpty()) {
             return List.of();
         }
-        Collection<Item> searchedItems = itemRepository.searchByText(text.toLowerCase());
+        Collection<ItemDto> searchedItems = itemRepository.searchByText(text.toLowerCase());
         if (searchedItems.isEmpty()) {
             throw new NotFoundException("Item is not found");
         }
@@ -57,7 +59,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void checkUsersItems(Long itemId, Long ownerId) {
-        Item existedItem = getItemById(itemId).orElseThrow();
+        Item existedItem = itemRepository.getItemById(itemId)
+                .orElseThrow();
         if (!existedItem.getOwnerId().equals(ownerId)) {
             throw new NotFoundException("Item is not found");
         }

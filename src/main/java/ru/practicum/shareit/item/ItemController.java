@@ -17,33 +17,33 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Item addItem(@RequestHeader(value = "X-Sharer-User-Id") Long userId, @Valid @RequestBody ItemDto itemDto) {
+    public ItemDto addItem(@RequestHeader(value = "X-Sharer-User-Id") Long userId, @Valid @RequestBody ItemDto itemDto) {
         return itemServiceImpl.addItem(userId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public Item updateItem(@PathVariable(value = "itemId") Long itemId,
+    public ItemDto updateItem(@PathVariable(value = "itemId") Long itemId,
                            @RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
-                           @Valid @RequestBody Item item) {
+                           @RequestBody ItemDto item) {
         return itemServiceImpl.updateItem(itemId, ownerId, item);
     }
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public Item getItemById(@PathVariable(value = "itemId") Long itemId) {
+    public ItemDto getItemById(@PathVariable(value = "itemId") Long itemId) {
         return itemServiceImpl.getItemById(itemId).orElseThrow();
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Item> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+    public Collection<ItemDto> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
         return itemServiceImpl.getMyItems(userId);
     }
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Item> searchByNameOrDesc(@RequestParam("text") String text) {
+    public Collection<ItemDto> searchByNameOrDesc(@RequestParam("text") String text) {
         return itemServiceImpl.searchByRequest(text);
     }
 

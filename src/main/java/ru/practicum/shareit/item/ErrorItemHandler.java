@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -14,19 +15,33 @@ public class ErrorItemHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handlerValidationException(final ValidationException e) {
-        return e.getMessage();
+    public ErrorMessage handlerValidationException(final ValidationException e) {
+        return new ErrorMessage("Bad input data");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handlerNotFoundException(final NotFoundException e) {
-        return e.getMessage();
+    public ErrorMessage handlerNotFoundException(final NotFoundException e) {
+        return new ErrorMessage("Not found");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handlerConflictException(final ConflictException e) {
-        return e.getMessage();
+    public ErrorMessage handlerConflictException(final ConflictException e) {
+        return new ErrorMessage("Conflict");
     }
+
+    //Handler returns code 404 after checking field by annotation @Valid. It is needed by Postman tests
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handlerMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        return new ErrorMessage("Bad input data");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessage handlerException(final Throwable e) {
+        return new ErrorMessage("Smth went wrong");
+    }
+
 }

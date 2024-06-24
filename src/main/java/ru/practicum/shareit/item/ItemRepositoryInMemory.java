@@ -17,16 +17,16 @@ public class ItemRepositoryInMemory implements ItemRepository {
     private final List<Item> items = new ArrayList<>();
 
     @Override
-    public Item addItem(Long userId, ItemDto itemDto) {
+    public ItemDto addItem(Long userId, ItemDto itemDto) {
         Item newItem = ItemMapper.mapToItem(itemDto);
         newItem.setOwnerId(userId);
         newItem.setId(defineItemId());
         items.add(newItem);
-        return newItem;
+        return ItemMapper.mapToItemDto(newItem);
     }
 
     @Override
-    public Item updateItem(Long itemId, Item item) {
+    public ItemDto updateItem(Long itemId, ItemDto item) {
         Item updatingItem = getItemById(itemId)
                 .orElseThrow(() -> new NotFoundException("User is not found"));
 
@@ -41,7 +41,7 @@ public class ItemRepositoryInMemory implements ItemRepository {
         }
         deleteItem(itemId);
         items.add(updatingItem);
-        return updatingItem;
+        return ItemMapper.mapToItemDto(updatingItem);
     }
 
     @Override
@@ -52,18 +52,20 @@ public class ItemRepositoryInMemory implements ItemRepository {
     }
 
     @Override
-    public Collection<Item> getMyItems(Long userId) {
+    public Collection<ItemDto> getMyItems(Long userId) {
         return items.stream()
                 .filter(item -> item.getOwnerId().equals(userId))
+                .map(ItemMapper::mapToItemDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Collection<Item> searchByText(String text) {
+    public Collection<ItemDto> searchByText(String text) {
         return items.stream()
                 .filter(item -> (item.getName().toLowerCase().contains(text))
                         || (item.getDescription().toLowerCase().contains(text))
                         && item.getAvailable())
+                .map(ItemMapper::mapToItemDto)
                 .collect(Collectors.toList());
     }
 

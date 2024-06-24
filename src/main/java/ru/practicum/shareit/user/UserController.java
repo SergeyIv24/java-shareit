@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.Collection;
 
@@ -17,25 +18,25 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public User createNewUser(@Valid @RequestBody User user) {
+    public UserDto createNewUser(@Valid @RequestBody UserDto user) {
         return userServiceImpl.createUser(user);
     }
 
     @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@Valid @PathVariable(value = "userId") Long id, @RequestBody User user) {
+    public UserDto updateUser(@Valid @PathVariable(value = "userId") Long id, @RequestBody UserDto user) {
         return userServiceImpl.updateUser(id, user);
     }
 
     @GetMapping("/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUserById(@PathVariable Long userId) {
+    public UserDto getUserById(@PathVariable Long userId) {
         return userServiceImpl.getUserById(userId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<User> getAllUsers() {
+    public Collection<UserDto> getAllUsers() {
         return userServiceImpl.getAllUsers();
     }
 

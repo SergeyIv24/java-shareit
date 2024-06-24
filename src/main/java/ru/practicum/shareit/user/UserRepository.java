@@ -1,17 +1,19 @@
 package ru.practicum.shareit.user;
 
+import ru.practicum.shareit.user.dto.UserDto;
+
 import java.util.Collection;
 import java.util.Optional;
 
 public interface UserRepository {
 
-    User addToStorage(User user);
+    UserDto addToStorage(UserDto user);
 
-    User updateUser(Long userId, User user);
+    UserDto updateUser(Long userId, UserDto user);
 
     Optional<User> getUserById(Long userId);
 
-    Collection<User> getAllUsers();
+    Collection<UserDto> getAllUsers();
 
     void deleteUser(Long userId);
 }

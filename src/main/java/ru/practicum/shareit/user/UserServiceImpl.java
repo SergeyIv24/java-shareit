@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.ConflictException;
 import ru.practicum.shareit.exceptions.NotFoundException;
+import ru.practicum.shareit.user.dto.UserDto;
+
 import java.util.Collection;
 
 @Service
@@ -14,26 +16,27 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepositoryInMemory;
 
     @Override
-    public User createUser(User user) {
+    public UserDto createUser(UserDto user) {
         validateUserEmailDuplicate(user);
         return userRepositoryInMemory.addToStorage(user);
     }
 
     @Override
-    public User updateUser(Long userId, User user) {
+    public UserDto updateUser(Long userId, UserDto user) {
         user.setId(userId);
         validateUserEmailDuplicate(user);
         return userRepositoryInMemory.updateUser(userId, user);
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public UserDto getUserById(Long userId) {
         return userRepositoryInMemory.getUserById(userId)
+                .map(UserMapper::mapToUserDto)
                 .orElseThrow(() -> new NotFoundException("user is not found"));
     }
 
     @Override
-    public Collection<User> getAllUsers() {
+    public Collection<UserDto> getAllUsers() {
         return userRepositoryInMemory.getAllUsers();
     }
 
@@ -42,7 +45,7 @@ public class UserServiceImpl implements UserService {
         userRepositoryInMemory.deleteUser(userId);
     }
 
-    private void validateUserEmailDuplicate(User user) {
+    private void validateUserEmailDuplicate(UserDto user) {
         boolean isDuplicateEmail = getAllUsers()
                 .stream()
                 .filter(user1 -> !user1.getId().equals(user.getId()) && user1.getEmail().equals(user.getEmail()))

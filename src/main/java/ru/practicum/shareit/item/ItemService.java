@@ -6,15 +6,15 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ItemService {
-    Item addItem(Long userId, ItemDto itemDto);
+    ItemDto addItem(Long userId, ItemDto itemDto);
 
-    Item updateItem(Long itemId, Long ownerId, Item item);
+    ItemDto updateItem(Long itemId, Long ownerId, ItemDto item);
 
-    Optional<Item> getItemById(Long itemId);
+    Optional<ItemDto> getItemById(Long itemId);
 
-    Collection<Item> getMyItems(Long userId);
+    Collection<ItemDto> getMyItems(Long userId);
 
-    Collection<Item> searchByRequest(String text);
+    Collection<ItemDto> searchByRequest(String text);
 
 
 }
