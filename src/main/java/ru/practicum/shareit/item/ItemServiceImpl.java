@@ -9,6 +9,7 @@ import ru.practicum.shareit.user.UserRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +20,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto addItem(Long userId, ItemDto itemDto) {
         checkUser(userId);
-        return itemRepository.addItem(userId, itemDto);
+        return ItemMapper.mapToItemDto(itemRepository.addItem(userId, itemDto));
     }
 
     @Override
     public ItemDto updateItem(Long itemId, Long ownerId, ItemDto item) {
         checkUser(ownerId);
         checkUsersItems(itemId, ownerId);
-        return itemRepository.updateItem(itemId, item);
+        return ItemMapper.mapToItemDto(itemRepository.updateItem(itemId, item));
     }
 
     @Override
@@ -38,7 +39,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDto> getMyItems(Long userId) {
-        return itemRepository.getMyItems(userId);
+        return itemRepository.getMyItems(userId)
+                .stream()
+                .map(ItemMapper::mapToItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -46,11 +50,13 @@ public class ItemServiceImpl implements ItemService {
         if (text.isEmpty()) {
             return List.of();
         }
-        Collection<ItemDto> searchedItems = itemRepository.searchByText(text.toLowerCase());
+        Collection<Item> searchedItems = itemRepository.searchByText(text.toLowerCase());
         if (searchedItems.isEmpty()) {
             throw new NotFoundException("Item is not found");
         }
-        return searchedItems;
+        return searchedItems.stream()
+                .map(ItemMapper::mapToItemDto)
+                .collect(Collectors.toList());
     }
 
     private void checkUser(Long userId) {

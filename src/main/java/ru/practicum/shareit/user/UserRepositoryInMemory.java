@@ -3,9 +3,8 @@ package ru.practicum.shareit.user;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.user.dto.UserDto;
-
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Repository
 @Slf4j
@@ -14,17 +13,17 @@ public class UserRepositoryInMemory implements UserRepository {
     private final List<User> users = new ArrayList<>();
 
     @Override
-    public UserDto addToStorage(UserDto newUser) {
+    public User addToStorage(UserDto newUser) {
         User user = UserMapper.mapToUser(newUser);
         if (newUser.getId() == null) {
             user.setId(defineUserId());
         }
         users.add(user);
-        return UserMapper.mapToUserDto(user);
+        return user;
     }
 
     @Override
-    public UserDto updateUser(Long userId, UserDto user) {
+    public User updateUser(Long userId, UserDto user) {
         User updatedUser = getUserById(userId).orElseThrow();
         if (user.getName() != null) {
             updatedUser.setName(user.getName());
@@ -34,7 +33,7 @@ public class UserRepositoryInMemory implements UserRepository {
         }
         deleteUser(userId);
         addToStorage(UserMapper.mapToUserDto(updatedUser));
-        return UserMapper.mapToUserDto(updatedUser);
+        return updatedUser;
     }
 
     @Override
@@ -45,11 +44,8 @@ public class UserRepositoryInMemory implements UserRepository {
     }
 
     @Override
-    public Collection<UserDto> getAllUsers() {
-        return users
-                .stream()
-                .map(UserMapper::mapToUserDto)
-                .collect(Collectors.toList());
+    public Collection<User> getAllUsers() {
+        return new ArrayList<>(users);
     }
 
     @Override

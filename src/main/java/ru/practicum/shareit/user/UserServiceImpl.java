@@ -8,6 +8,7 @@ import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,14 +19,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto user) {
         validateUserEmailDuplicate(user);
-        return userRepositoryInMemory.addToStorage(user);
+        return UserMapper.mapToUserDto(userRepositoryInMemory.addToStorage(user));
     }
 
     @Override
     public UserDto updateUser(Long userId, UserDto user) {
         user.setId(userId);
         validateUserEmailDuplicate(user);
-        return userRepositoryInMemory.updateUser(userId, user);
+        return UserMapper.mapToUserDto(userRepositoryInMemory.updateUser(userId, user));
     }
 
     @Override
@@ -37,7 +38,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Collection<UserDto> getAllUsers() {
-        return userRepositoryInMemory.getAllUsers();
+        return userRepositoryInMemory
+                .getAllUsers()
+                .stream()
+                .map(UserMapper::mapToUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override

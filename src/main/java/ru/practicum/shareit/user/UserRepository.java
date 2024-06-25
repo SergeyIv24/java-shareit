@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    UserDto addToStorage(UserDto user);
+    User addToStorage(UserDto user);
 
-    UserDto updateUser(Long userId, UserDto user);
+    User updateUser(Long userId, UserDto user);
 
     Optional<User> getUserById(Long userId);
 
-    Collection<UserDto> getAllUsers();
+    Collection<User> getAllUsers();
 
     void deleteUser(Long userId);
 }
