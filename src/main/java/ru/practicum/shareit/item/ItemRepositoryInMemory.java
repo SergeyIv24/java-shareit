@@ -19,7 +19,7 @@ public class ItemRepositoryInMemory implements ItemRepository {
     @Override
     public Item addItem(Long userId, ItemDto itemDto) {
         Item newItem = ItemMapper.mapToItem(itemDto);
-        newItem.setOwnerId(userId);
+        //newItem.setUser(userId);
         newItem.setId(defineItemId());
         items.add(newItem);
         return newItem;
@@ -54,7 +54,7 @@ public class ItemRepositoryInMemory implements ItemRepository {
     @Override
     public Collection<Item> getMyItems(Long userId) {
         return items.stream()
-                .filter(item -> item.getOwnerId().equals(userId))
+                .filter(item -> item.getUser().equals(userId))
                 .collect(Collectors.toList());
     }
 

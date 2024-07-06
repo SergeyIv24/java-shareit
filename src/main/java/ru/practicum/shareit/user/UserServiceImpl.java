@@ -14,40 +14,52 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepositoryInMemory;
+    private final UserRepository userRepository;
 
     @Override
     public UserDto createUser(UserDto user) {
         validateUserEmailDuplicate(user);
-        return UserMapper.mapToUserDto(userRepositoryInMemory.addToStorage(user));
+        return UserMapper.mapToUserDto(userRepository.save(UserMapper.mapToUser(user)));
+
+        //return UserMapper.mapToUserDto(userRepositoryInMemory.addToStorage(user));
     }
 
     @Override
     public UserDto updateUser(Long userId, UserDto user) {
         user.setId(userId);
         validateUserEmailDuplicate(user);
-        return UserMapper.mapToUserDto(userRepositoryInMemory.updateUser(userId, user));
+        return null;
+        //return UserMapper.mapToUserDto(userRepository.updateUser(userId, user));
     }
 
     @Override
     public UserDto getUserById(Long userId) {
-        return userRepositoryInMemory.getUserById(userId)
+        return UserMapper.mapToUserDto(userRepository
+                        .findById(userId)
+                        .orElseThrow(() -> new NotFoundException("user is not found")));
+
+/*        return userRepository.getUserById(userId)
                 .map(UserMapper::mapToUserDto)
-                .orElseThrow(() -> new NotFoundException("user is not found"));
+                .orElseThrow(() -> new NotFoundException("user is not found"));*/
     }
 
     @Override
     public Collection<UserDto> getAllUsers() {
-        return userRepositoryInMemory
+        return userRepository.findAll().stream()
+                .map(UserMapper::mapToUserDto)
+                .collect(Collectors.toList());
+
+/*        return userRepository
                 .getAllUsers()
                 .stream()
                 .map(UserMapper::mapToUserDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
 
     @Override
     public void deleteUser(Long userId) {
-        userRepositoryInMemory.deleteUser(userId);
+        userRepository.deleteById(userId);
+        //userRepository.deleteUser(userId);
     }
 
     private void validateUserEmailDuplicate(UserDto user) {

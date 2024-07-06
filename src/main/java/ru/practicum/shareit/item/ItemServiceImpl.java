@@ -60,14 +60,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void checkUser(Long userId) {
-        userRepository.getUserById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("user is not found"));
     }
 
     private void checkUsersItems(Long itemId, Long ownerId) {
         Item existedItem = itemRepository.getItemById(itemId)
                 .orElseThrow();
-        if (!existedItem.getOwnerId().equals(ownerId)) {
+        if (!existedItem.getUser().equals(ownerId)) {
             throw new NotFoundException("Item is not found");
         }
     }

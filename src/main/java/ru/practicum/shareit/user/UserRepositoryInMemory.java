@@ -1,3 +1,4 @@
+/*
 package ru.practicum.shareit.user;
 
 import lombok.extern.slf4j.Slf4j;
@@ -61,3 +62,4 @@ public class UserRepositoryInMemory implements UserRepository {
         return ++userAmount;
     }
 }
+*/
