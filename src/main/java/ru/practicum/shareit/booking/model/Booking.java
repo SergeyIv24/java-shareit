@@ -3,29 +3,37 @@ package ru.practicum.shareit.booking.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.user.User;
 
-import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-/*@Entity
-@Table(name = "booking")*/
+@Entity
+@Table(name = "bookings")
 @Data
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long bookingId;
+    Long id;
 
     @NotNull(message = "itemId must exist")
-
-    Long itemId;
+    @OneToOne
+    @JoinColumn(name = "item_id")
+    Item item;
 
     @NotNull(message = "userId must exist")
-    Long userId; //Who takes item
-    LocalDate start;
-    Duration rentDuration;
-    LocalDate end;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user; //Who takes item
 
-    @Column(name = "is_confirmed")
-    Boolean isConfirmed;
+    @Column(name = "start_date")
+    LocalDateTime start;
+
+
+    @Column(name = "end_date")
+    LocalDateTime end;
+
+    @Column(name = "status")
+    String status;
 }

@@ -18,10 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto user) {
-        validateUserEmailDuplicate(user);
         return UserMapper.mapToUserDto(userRepository.save(UserMapper.mapToUser(user)));
-
-        //return UserMapper.mapToUserDto(userRepositoryInMemory.addToStorage(user));
     }
 
     @Override
@@ -38,10 +35,7 @@ public class UserServiceImpl implements UserService {
             updatedUser.setEmail(user.getEmail());
         }
 
-        //userRepository.deleteById(userId);
-
         return UserMapper.mapToUserDto(userRepository.save(updatedUser));
-        //return UserMapper.mapToUserDto(userRepository.updateUser(userId, user));
     }
 
     @Override
@@ -49,10 +43,6 @@ public class UserServiceImpl implements UserService {
         return UserMapper.mapToUserDto(userRepository
                         .findById(userId)
                         .orElseThrow(() -> new NotFoundException("user is not found")));
-
-/*        return userRepository.getUserById(userId)
-                .map(UserMapper::mapToUserDto)
-                .orElseThrow(() -> new NotFoundException("user is not found"));*/
     }
 
     @Override
@@ -60,18 +50,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toList());
-
-/*        return userRepository
-                .getAllUsers()
-                .stream()
-                .map(UserMapper::mapToUserDto)
-                .collect(Collectors.toList());*/
     }
 
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
-        //userRepository.deleteUser(userId);
     }
 
     private void validateUserEmailDuplicate(UserDto user) {
