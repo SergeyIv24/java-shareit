@@ -28,7 +28,19 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(Long userId, UserDto user) {
         user.setId(userId);
         validateUserEmailDuplicate(user);
-        return null;
+
+        User updatedUser = userRepository.findById(userId).orElseThrow();
+
+        if (user.getName() != null) {
+            updatedUser.setName(user.getName());
+        }
+        if (user.getEmail() != null) {
+            updatedUser.setEmail(user.getEmail());
+        }
+
+        //userRepository.deleteById(userId);
+
+        return UserMapper.mapToUserDto(userRepository.save(updatedUser));
         //return UserMapper.mapToUserDto(userRepository.updateUser(userId, user));
     }
 

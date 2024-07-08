@@ -16,6 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     Long id;
 
     @NotBlank(message = "Empty user name")
