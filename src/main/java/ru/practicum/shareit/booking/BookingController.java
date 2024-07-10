@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequest;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,11 +28,11 @@ public class BookingController {
         return bookingService.addBookingRequest(userId, bookingRequest);
     }
 
-    @PatchMapping("/{bookingId}/approved")
+    @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
     public BookingDto bookingConformation(@PathVariable(value = "bookingId") Long bookingId,
-                                          @PathParam("approved") Boolean approved) {
-        return null;
+                                                   @PathParam("approved") Boolean approved) {
+        return bookingService.approveBooking(bookingId, approved);
     }
 
     @GetMapping("/{bookingId}")
@@ -41,9 +43,27 @@ public class BookingController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<BookingDto> getAllBookingsByUser(@PathParam("state") String state) {
-        return null;
+    public List<BookingDto> getAllBookingsByUser(@RequestHeader(value = "X-Sharer-User-Id") Long userId,
+                                                 @PathParam("state") BookingStates state) {
+        //validateState(state);
+        return bookingService.getBookingsByConditions(userId, state, Instant.now());
     }
+
+    @GetMapping("/owner")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookingDto> getAllBookingsForOwner(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
+                                                   @PathParam("state") BookingStates states) {
+        //validateState(states);
+        return bookingService.getBookingsForOwner(ownerId, states, Instant.now());
+    }
+
+/*    private void validateState(String state) {
+        try {
+            BookingStates states = BookingStates.valueOf(state);
+        } catch (Throwable e) {
+            throw new UnsupportedException("Unknown state: UNSUPPORTED_STATUS");
+        }
+    }*/
 
 
 

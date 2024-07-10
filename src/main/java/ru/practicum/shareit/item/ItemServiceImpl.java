@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoWithDates;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
@@ -47,8 +48,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return ItemMapper.mapToItemDto(itemRepository.save(updatingItem));
-
-        //return ItemMapper.mapToItemDto(itemRepository.updateItem(itemId, item));
     }
 
     @Override
@@ -59,18 +58,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemDto> getMyItems(Long userId) {
+    public Collection<ItemDtoWithDates> getMyItems(Long userId) {
         return itemRepository.findByUserId(userId)
                 .stream()
-                .map(ItemMapper::mapToItemDto)
+                .map(ItemMapper::mapToItemDtoWithDates)
                 .collect(Collectors.toList());
-
-
-
-/*        return itemRepository.getMyItems(userId)
-                .stream()
-                .map(ItemMapper::mapToItemDto)
-                .collect(Collectors.toList());*/
     }
 
     @Override

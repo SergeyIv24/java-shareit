@@ -40,16 +40,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long userId) {
-        return UserMapper.mapToUserDto(userRepository
-                        .findById(userId)
-                        .orElseThrow(() -> new NotFoundException("user is not found")));
+        return UserMapper.mapToUserDto(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user is not found")));
     }
 
     @Override
     public Collection<UserDto> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(UserMapper::mapToUserDto)
-                .collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
     }
 
     @Override
@@ -58,11 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUserEmailDuplicate(UserDto user) {
-        boolean isDuplicateEmail = getAllUsers()
-                .stream()
-                .filter(user1 -> !user1.getId().equals(user.getId()) && user1.getEmail().equals(user.getEmail()))
-                .findFirst()
-                .isEmpty();
+        boolean isDuplicateEmail = getAllUsers().stream().filter(user1 -> !user1.getId().equals(user.getId()) && user1.getEmail().equals(user.getEmail())).findFirst().isEmpty();
         if (!isDuplicateEmail) {
             log.warn("Email is existed");
             throw new ConflictException("DuplicateEmail");

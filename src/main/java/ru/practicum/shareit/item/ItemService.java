@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item;
 
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoWithDates;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -11,7 +13,7 @@ public interface ItemService {
 
     Optional<ItemDto> getItemById(Long itemId);
 
-    Collection<ItemDto> getMyItems(Long userId);
+    Collection<ItemDtoWithDates> getMyItems(Long userId);
 
     Collection<ItemDto> searchByRequest(String text);
 

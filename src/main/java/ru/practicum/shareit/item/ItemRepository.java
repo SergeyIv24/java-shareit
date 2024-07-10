@@ -14,27 +14,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByUserId(Long userId);
 
-    //List<Item> findByNameContainingIgnoreCase(String searchText); //OrDescriptionContainingIgnoreCase
-
     @Query("select it " +
             "from Item as it " +
             "where (it.name ilike %?1% OR it.description ilike %?1%) " +
             "AND available = true")
-
     List<Item> findBySearch(String searchText);
 
-
-/*    Item addItem(Long userId, ItemDto itemDto);
-
-    Item updateItem(Long itemId, ItemDto item);
-
-    Optional<Item> getItemById(Long itemId);
-
-    Collection<Item> getMyItems(Long userId);
-
-    Collection<Item> searchByText(String text);*/
-
-    /*    @Query(value = "select * from items " +
-            "where (name ilike  ?1% OR description ilike ?1%) " +
-            "AND available = true", nativeQuery = true)*/
 }

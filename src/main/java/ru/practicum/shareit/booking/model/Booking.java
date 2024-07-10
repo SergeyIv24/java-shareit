@@ -6,6 +6,7 @@ import lombok.Data;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,14 +26,14 @@ public class Booking {
     @NotNull(message = "userId must exist")
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user; //Who takes item
+    User booker; //Who takes item
 
     @Column(name = "start_date")
-    LocalDateTime start;
+    Instant start;
 
 
     @Column(name = "end_date")
-    LocalDateTime end;
+    Instant end;
 
     @Column(name = "status")
     String status;
