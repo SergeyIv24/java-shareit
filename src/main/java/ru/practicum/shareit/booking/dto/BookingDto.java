@@ -21,8 +21,5 @@ public class BookingDto {
     private String status;
     private User booker; //Who takes item
     @NotNull
-    private ItemDtoWithDates item;
-
-
-
+    private Item item;
 }

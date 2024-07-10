@@ -2,9 +2,9 @@ package ru.practicum.shareit.booking;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.BookingDtoDates;
 import ru.practicum.shareit.booking.dto.BookingRequest;
 import ru.practicum.shareit.booking.model.Booking;
-import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
@@ -20,13 +20,11 @@ public class BookingMapper {
     public static BookingDto mapToBookingDto(Booking booking) {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setId(booking.getId());
-        bookingDto.setItem(ItemMapper.mapToItemDtoWithDates(booking.getItem()));
+        bookingDto.setItem(booking.getItem());
         bookingDto.setBooker(booking.getBooker());
         bookingDto.setStatus(booking.getStatus());
-
         bookingDto.setStart(LocalDateTime.ofInstant(booking.getStart(), ZoneId.of("Europe/Moscow")));
         bookingDto.setEnd(LocalDateTime.ofInstant(booking.getEnd(), ZoneId.of("Europe/Moscow")));
-
         return bookingDto;
     }
 
@@ -57,5 +55,13 @@ public class BookingMapper {
         return booking;
     }
 
-
+    public static BookingDtoDates mapToBookingDtoDates(Booking booking) {
+        BookingDtoDates bookingDtoDates = new BookingDtoDates();
+        bookingDtoDates.setId(booking.getId());
+        bookingDtoDates.setItem(booking.getItem());
+        bookingDtoDates.setBookerId(booking.getBooker().getId());
+        bookingDtoDates.setStart(LocalDateTime.ofInstant(booking.getStart(), ZoneId.of("Europe/Moscow")));
+        bookingDtoDates.setEnd(LocalDateTime.ofInstant(booking.getEnd(), ZoneId.of("Europe/Moscow")));
+        return bookingDtoDates;
+    }
 }

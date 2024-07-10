@@ -2,12 +2,16 @@ package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.booking.BookingRepository;
+import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithDates;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
+
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
 
     @Override
     public ItemDto addItem(Long userId, ItemDto itemDto) {
@@ -50,17 +55,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto getItemById(Long itemId) {
-        return ItemMapper
-                .mapToItemDto(itemRepository.findById(itemId)
-                        .orElseThrow(() -> new NotFoundException("Item is not found")));
+    public ItemDtoWithDates getItemById(Long itemId, Instant now, Long ownerId) {
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found"));
+        if (item.getUser().getId().equals(ownerId)) {
+            Booking lastBooking = bookingRepository.findLastBooking(itemId, now).orElse(null);
+            Booking nextBooing = bookingRepository.findNextBooking(itemId, now).orElse(null);
+            return ItemMapper.mapToItemDtoWithDates(item, lastBooking, nextBooing);
+        }
+        return ItemMapper.mapToItemDtoWithDates(item, null, null);
     }
 
     @Override
-    public Collection<ItemDtoWithDates> getMyItems(Long userId) {
+    public Collection<ItemDto> getMyItems(Long userId) {
         return itemRepository.findByUserId(userId)
                 .stream()
-                .map(ItemMapper::mapToItemDtoWithDates)
+                .map(ItemMapper::mapToItemDto)
                 .collect(Collectors.toList());
     }
 

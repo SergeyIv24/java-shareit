@@ -1,13 +1,16 @@
 package ru.practicum.shareit.booking;
 
+import org.hibernate.query.spi.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.booking.model.Booking;
 
+import java.awt.print.Pageable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -85,5 +88,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "ORDER BY start_date DESC ", nativeQuery = true)
     List<Booking> findByOwnerIdStatusCurrentAndOrderByStartDesc(Long ownerId, Instant now);
 
+    @Query(value = "select  * from bookings " +
+            "where item_id = ?1 AND start_date < ?2 " +
+            "ORDER BY start_date ASC " +
+            "limit 1 ", nativeQuery = true)
+    Optional<Booking> findLastBooking(Long itemId, Instant now);
 
+    @Query(value = "select  * from bookings " +
+            "where item_id = ?1 AND start_date > ?2 " +
+            "ORDER BY start_date ASC " +
+            "limit 1 ", nativeQuery = true)
+    Optional<Booking> findNextBooking(Long itemId, Instant now);
 }

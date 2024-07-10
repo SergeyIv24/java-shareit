@@ -4,12 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.springframework.cglib.core.Local;
+import lombok.EqualsAndHashCode;
+import ru.practicum.shareit.booking.dto.BookingDtoDates;
 
-import java.time.LocalDateTime;
-
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ItemDtoWithDates {
+public class ItemDtoWithDates extends ItemDto {
     private Long id;
     @NotBlank
     @Size(max = 100, message = "Bad name length")
@@ -19,6 +19,6 @@ public class ItemDtoWithDates {
     private String description;
     @NotNull
     private Boolean available;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private BookingDtoDates lastBooking;
+    private BookingDtoDates nextBooking;
 }
