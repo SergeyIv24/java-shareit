@@ -28,11 +28,17 @@ public class BookingServiceImp implements BookingService {
     private final ItemRepository itemRepository;
 
     public BookingDto addBookingRequest(Long userId, BookingRequest bookingRequest) {
-        validationData(bookingRequest);
+        validateData(bookingRequest);
         User owner = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found"));
         Item item = itemRepository
                 .findById(bookingRequest.getItemId())
                 .orElseThrow(() -> new NotFoundException("Item is not found"));
+
+        if (item.getUser().getId().equals(userId)) {
+            throw new NotFoundException("User can not book own item");
+        }
+
+
         if (!item.getAvailable()) {
             throw new ValidationException("Item is not available");
         }
@@ -46,11 +52,14 @@ public class BookingServiceImp implements BookingService {
     public BookingDto approveBooking(Long bookingId, Boolean approved, Long ownerId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking is not found"));
+        validateBookingApprovement(ownerId, booking);
 
-        if (!booking.getItem().getUser().getId().equals(ownerId)) {
-            throw new ValidationException("Item does not belong to user");
+/*        Item item = itemRepository.findById(booking.getItem()
+                .getId())
+                .orElseThrow(() -> new NotFoundException("Item is not found"));
 
-        }
+        item.setAvailable(false);
+        itemRepository.save(item);*/
 
         if (approved) {
             booking.setStatus(String.valueOf(BookingStatus.APPROVED));
@@ -69,7 +78,7 @@ public class BookingServiceImp implements BookingService {
                 .findById(bookingId).orElseThrow(() -> new NotFoundException("Booking is not found"));
         if ((!booking.getBooker().getId().equals(ownerId))
                 && (!booking.getItem().getUser().getId().equals(ownerId))) {
-            throw new ValidationException("Booking does not belong to user");
+            throw new NotFoundException("Booking does not belong to user");
         }
         return BookingMapper.mapToBookingDto(booking);
     }
@@ -128,8 +137,8 @@ public class BookingServiceImp implements BookingService {
             case FUTURE -> bookingRepository
                     .findByOwnerIdStatusFutureAndOrderByStartDesc(userId, now);
             case PAST -> bookingRepository
-                    .findByOwnerIdStatusPastAndOrderByStartDesc(userId);
-            case CURRENT -> bookingRepository.findByOwnerIdStatusCurrentAndOrderByStartDesc(userId);
+                    .findByOwnerIdStatusPastAndOrderByStartDesc(userId, now);
+            case CURRENT -> bookingRepository.findByOwnerIdStatusCurrentAndOrderByStartDesc(userId, now);
             case REJECTED -> bookingRepository.findByOwnerIdStatusRejectedAndOrderByStartDesc(userId);
             case WAITING -> bookingRepository.findByOwnerIdStatusWaitingAndOrderByStartDesc(userId);
         };
@@ -139,7 +148,7 @@ public class BookingServiceImp implements BookingService {
     }
 
 
-    private void validationData(BookingRequest bookingRequest) {
+    private void validateData(BookingRequest bookingRequest) {
         if (bookingRequest.getStart().equals(bookingRequest.getEnd())) {
             log.warn("Start equal end");
             throw new ValidationException("Start equal end");
@@ -159,6 +168,20 @@ public class BookingServiceImp implements BookingService {
             BookingStates states = BookingStates.valueOf(state);
         } catch (Throwable e) {
             throw new UnsupportedException("Unknown state: UNSUPPORTED_STATUS");
+        }
+    }
+    
+    private void validateBookingApprovement(Long ownerId, Booking booking) {
+        if (booking.getBooker().getId().equals(ownerId)) {
+            throw new NotFoundException("Item does not belong to user");
+        }
+
+        if (!booking.getItem().getUser().getId().equals(ownerId)) {
+            throw new ValidationException("Item does not belong to user");
+        }
+
+        if (booking.getStatus().equals(String.valueOf(BookingStatus.APPROVED))) {
+            throw new ValidationException("Booking is already approved");
         }
     }
 }

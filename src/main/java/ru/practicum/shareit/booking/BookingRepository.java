@@ -71,19 +71,19 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = ?1 AND start_date < current_timestamp " +
+            "Having i.user_id = ?1 AND start_date < ?2 " +
             "ORDER BY start_date DESC ", nativeQuery = true)
-    List<Booking> findByOwnerIdStatusPastAndOrderByStartDesc(Long ownerId);
+    List<Booking> findByOwnerIdStatusPastAndOrderByStartDesc(Long ownerId, Instant now);
 
     @Query(value = "SELECT b.id, b.item_id, b.user_id, start_date, " +
             "end_date, status " +
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = 4 AND start_date < current_timestamp " +
-            "AND end_date < current_timestamp " +
+            "Having i.user_id = ?1 AND start_date < ?2 " +
+            "AND end_date < ?2 " +
             "ORDER BY start_date DESC ", nativeQuery = true)
-    List<Booking> findByOwnerIdStatusCurrentAndOrderByStartDesc(Long ownerId);
+    List<Booking> findByOwnerIdStatusCurrentAndOrderByStartDesc(Long ownerId, Instant now);
 
 
 }
