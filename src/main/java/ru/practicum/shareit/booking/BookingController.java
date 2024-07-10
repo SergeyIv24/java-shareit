@@ -9,7 +9,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequest;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,40 +30,29 @@ public class BookingController {
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
     public BookingDto bookingConformation(@PathVariable(value = "bookingId") Long bookingId,
-                                                   @PathParam("approved") Boolean approved) {
-        return bookingService.approveBooking(bookingId, approved);
+                                                   @PathParam("approved") Boolean approved,
+                                          @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
+        return bookingService.approveBooking(bookingId, approved, ownerId);
     }
 
     @GetMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto getBookingById(@PathVariable(value = "bookingId") Long bookingId) {
-        return bookingService.getBooking(bookingId);
+    public BookingDto getBookingById(@PathVariable(value = "bookingId") Long bookingId,
+                                     @RequestHeader (value = "X-Sharer-User-Id") Long ownerId) {
+        return bookingService.getBooking(bookingId, ownerId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<BookingDto> getAllBookingsByUser(@RequestHeader(value = "X-Sharer-User-Id") Long userId,
-                                                 @PathParam("state") BookingStates state) {
-        //validateState(state);
+                                                 @PathParam("state") String state) {
         return bookingService.getBookingsByConditions(userId, state, Instant.now());
     }
 
     @GetMapping("/owner")
     @ResponseStatus(HttpStatus.OK)
     public List<BookingDto> getAllBookingsForOwner(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
-                                                   @PathParam("state") BookingStates states) {
-        //validateState(states);
-        return bookingService.getBookingsForOwner(ownerId, states, Instant.now());
+                                                   @PathParam("state") String state) {
+        return bookingService.getBookingsForOwner(ownerId, state, Instant.now());
     }
-
-/*    private void validateState(String state) {
-        try {
-            BookingStates states = BookingStates.valueOf(state);
-        } catch (Throwable e) {
-            throw new UnsupportedException("Unknown state: UNSUPPORTED_STATUS");
-        }
-    }*/
-
-
-
 }

@@ -33,7 +33,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = 4 AND status IN ('APPROVED', 'WAITING') " +
+            "Having i.user_id = ?1 AND status IN ('APPROVED', 'WAITING') " +
             "ORDER BY start_date DESC ", nativeQuery = true)
     List<Booking> findByOwnerIdOrderByStartDesc(Long userId);
 
@@ -42,7 +42,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = 4 AND status IN ('REJECTED') " +
+            "Having i.user_id = ?1 AND status IN ('REJECTED') " +
             "ORDER BY start_date DESC ",
             nativeQuery = true)
     List<Booking> findByOwnerIdStatusRejectedAndOrderByStartDesc(Long ownerId);
@@ -52,10 +52,38 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = 4 AND status IN ('WAITING') " +
+            "Having i.user_id = ?1 AND status IN ('WAITING') " +
             "ORDER BY start_date DESC ",
             nativeQuery = true)
     List<Booking> findByOwnerIdStatusWaitingAndOrderByStartDesc(Long ownerId);
+
+    @Query(value = "SELECT b.id, b.item_id, b.user_id, start_date, " +
+            "end_date, status " +
+            "FROM bookings AS b " +
+            "JOIN items AS i ON b.item_id = i.item_id " +
+            "GROUP BY b.id, i.user_id " +
+            "Having i.user_id = ?1 AND start_date > ?2 " +
+            "ORDER BY start_date DESC ", nativeQuery = true)
+    List<Booking> findByOwnerIdStatusFutureAndOrderByStartDesc(Long ownerId, Instant now);
+
+    @Query(value = "SELECT b.id, b.item_id, b.user_id, start_date, " +
+            "end_date, status " +
+            "FROM bookings AS b " +
+            "JOIN items AS i ON b.item_id = i.item_id " +
+            "GROUP BY b.id, i.user_id " +
+            "Having i.user_id = ?1 AND start_date < current_timestamp " +
+            "ORDER BY start_date DESC ", nativeQuery = true)
+    List<Booking> findByOwnerIdStatusPastAndOrderByStartDesc(Long ownerId);
+
+    @Query(value = "SELECT b.id, b.item_id, b.user_id, start_date, " +
+            "end_date, status " +
+            "FROM bookings AS b " +
+            "JOIN items AS i ON b.item_id = i.item_id " +
+            "GROUP BY b.id, i.user_id " +
+            "Having i.user_id = 4 AND start_date < current_timestamp " +
+            "AND end_date < current_timestamp " +
+            "ORDER BY start_date DESC ", nativeQuery = true)
+    List<Booking> findByOwnerIdStatusCurrentAndOrderByStartDesc(Long ownerId);
 
 
 }

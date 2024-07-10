@@ -10,11 +10,11 @@ import java.util.List;
 public interface BookingService {
     BookingDto addBookingRequest(Long userId, BookingRequest bookingRequest);
 
-    BookingDto approveBooking(Long bookingId, Boolean approved);
+    BookingDto approveBooking(Long bookingId, Boolean approved, Long ownerId);
 
-    BookingDto getBooking(Long bookingId);
+    BookingDto getBooking(Long bookingId, Long ownerId);
 
-    List<BookingDto> getBookingsByConditions(Long userId, BookingStates states, Instant now);
+    List<BookingDto> getBookingsByConditions(Long userId, String states, Instant now);
 
-    List<BookingDto> getBookingsForOwner(Long ownerId, BookingStates states, Instant now);
+    List<BookingDto> getBookingsForOwner(Long ownerId, String states, Instant now);
 }

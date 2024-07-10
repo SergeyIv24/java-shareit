@@ -26,7 +26,6 @@ public class ItemServiceImpl implements ItemService {
         Item addingItem = ItemMapper.mapToItem(itemDto);
         addingItem.setUser(itemOwner);
         return ItemMapper.mapToItemDto(itemRepository.save(addingItem));
-        //return ItemMapper.mapToItemDto(itemRepository.addItem(userId, itemDto));
     }
 
     @Override
@@ -51,10 +50,10 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Optional<ItemDto> getItemById(Long itemId) {
-        return itemRepository
-                .findById(itemId)
-                .map(ItemMapper::mapToItemDto);
+    public ItemDto getItemById(Long itemId) {
+        return ItemMapper
+                .mapToItemDto(itemRepository.findById(itemId)
+                        .orElseThrow(() -> new NotFoundException("Item is not found")));
     }
 
     @Override

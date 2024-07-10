@@ -32,7 +32,7 @@ public class ItemController {
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
     public ItemDto getItemById(@PathVariable(value = "itemId") Long itemId) {
-        return itemServiceImpl.getItemById(itemId).orElseThrow();
+        return itemServiceImpl.getItemById(itemId);
     }
 
     @GetMapping
