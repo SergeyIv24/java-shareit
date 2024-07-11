@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import ru.practicum.shareit.booking.dto.BookingDtoDates;
+import ru.practicum.shareit.booking.dto.BookingWithInfoDto;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,6 +21,7 @@ public class ItemDtoWithDates extends ItemDto {
     private String description;
     @NotNull
     private Boolean available;
-    private BookingDtoDates lastBooking;
-    private BookingDtoDates nextBooking;
+    private BookingWithInfoDto lastBooking;
+    private BookingWithInfoDto nextBooking;
+    private List<CommentsDto> comments;
 }

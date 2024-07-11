@@ -19,16 +19,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByBookerIdAndStartAfterOrderByStartDesc(Long bookerId, Instant current);
 
-
-
-    List<Booking> findByItemIdAndAndStatus(Long itemId, String status);
+    List<Booking> findByBookerIdAndItemIdAndStatus(Long bookerId, Long itemId, String status);
 
     @Query(value = "SELECT * FROM bookings " +
-            "WHERE start_date < CURRENT_DATE " +
-            "AND end_date < CURRENT_DATE " +
-            "AND status IN ('APPROVED') " +
-            "ORDER BY start_date DESC ", nativeQuery = true)
-    List<Booking> findCurrentBookings(Long bookerId);
+            "WHERE start_date <= ?2 " +
+            "AND end_date >= ?2 " +
+            "AND user_id = ?1 " +
+            "ORDER BY start_date ASC ", nativeQuery = true)
+    List<Booking> findCurrentBookings(Long bookerId, Instant now);
 
 
     @Query(value = "SELECT b.id, b.item_id, b.user_id, start_date, " +
@@ -75,6 +73,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
             "Having i.user_id = ?1 AND start_date < ?2 " +
+            "AND status NOT IN ('REJECTED') " +
             "ORDER BY start_date DESC ", nativeQuery = true)
     List<Booking> findByOwnerIdStatusPastAndOrderByStartDesc(Long ownerId, Instant now);
 
@@ -83,22 +82,22 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = ?1 AND start_date < ?2 " +
-            "AND end_date < ?2 " +
+            "Having i.user_id = ?1 AND start_date <= ?2 " +
+            "AND end_date >= ?2 " +
             "ORDER BY start_date DESC ", nativeQuery = true)
     List<Booking> findByOwnerIdStatusCurrentAndOrderByStartDesc(Long ownerId, Instant now);
 
     @Query(value = "select  * from bookings " +
             "where item_id = ?1 AND start_date < ?2 " +
-            "ORDER BY start_date ASC " +
+            "AND status IN ('APPROVED') " +
+            "ORDER BY start_date DESC " +
             "limit 1 ", nativeQuery = true)
     Optional<Booking> findLastBooking(Long itemId, Instant now);
 
     @Query(value = "select  * from bookings " +
             "where item_id = ?1 AND start_date > ?2 " +
+            "AND status IN ('APPROVED') " +
             "ORDER BY start_date ASC " +
             "limit 1 ", nativeQuery = true)
     Optional<Booking> findNextBooking(Long itemId, Instant now);
-
-
 }

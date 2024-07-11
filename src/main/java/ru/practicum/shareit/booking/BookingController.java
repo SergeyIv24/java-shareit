@@ -30,7 +30,7 @@ public class BookingController {
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
     public BookingDto bookingConformation(@PathVariable(value = "bookingId") Long bookingId,
-                                                   @PathParam("approved") Boolean approved,
+                                          @PathParam("approved") Boolean approved,
                                           @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
         return bookingService.approveBooking(bookingId, approved, ownerId);
     }
@@ -38,7 +38,7 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
     public BookingDto getBookingById(@PathVariable(value = "bookingId") Long bookingId,
-                                     @RequestHeader (value = "X-Sharer-User-Id") Long ownerId) {
+                                     @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
         return bookingService.getBooking(bookingId, ownerId);
     }
 

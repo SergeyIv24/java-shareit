@@ -50,5 +50,4 @@ public class ErrorItemHandler {
     public ErrorMessage handlerException(final Throwable e) {
         return new ErrorMessage("Smth went wrong");
     }
-
 }

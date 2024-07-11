@@ -54,13 +54,6 @@ public class BookingServiceImp implements BookingService {
                 .orElseThrow(() -> new NotFoundException("Booking is not found"));
         validateBookingApprovement(ownerId, booking);
 
-/*        Item item = itemRepository.findById(booking.getItem()
-                .getId())
-                .orElseThrow(() -> new NotFoundException("Item is not found"));
-
-        item.setAvailable(false);
-        itemRepository.save(item);*/
-
         if (approved) {
             booking.setStatus(String.valueOf(BookingStatus.APPROVED));
         }
@@ -93,7 +86,6 @@ public class BookingServiceImp implements BookingService {
         validateState(states);
         validateUser(userId);
         return getBookingsUseStates(userId, BookingStates.valueOf(states), now);
-
     }
 
     @Override
@@ -121,7 +113,7 @@ public class BookingServiceImp implements BookingService {
                     .findByBookerIdAndStartAfterOrderByStartDesc(userId, now);
             case PAST -> bookingRepository
                     .findByBookerIdAndEndBeforeOrderByStartDesc(userId, now);
-            case CURRENT -> bookingRepository.findCurrentBookings(userId);
+            case CURRENT -> bookingRepository.findCurrentBookings(userId, now);
             case WAITING, REJECTED ->
                     bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId, String.valueOf(states));
         };

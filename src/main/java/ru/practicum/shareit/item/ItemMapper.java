@@ -4,9 +4,13 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.item.dto.CommentsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithDates;
+import ru.practicum.shareit.item.model.Comments;
 import ru.practicum.shareit.item.model.Item;
+
+import java.util.List;
 
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -29,7 +33,9 @@ public final class ItemMapper {
         return item;
     }
 
-    public static ItemDtoWithDates mapToItemDtoWithDates(Item item, Booking last, Booking next) {
+    public static ItemDtoWithDates mapToItemDtoWithDates(Item item, Booking last,
+                                                         Booking next,
+                                                         List<CommentsDto> comments) {
         ItemDtoWithDates itemDtoWithDates = new ItemDtoWithDates();
         itemDtoWithDates.setId(item.getId());
         itemDtoWithDates.setName(item.getName());
@@ -41,6 +47,9 @@ public final class ItemMapper {
         }
         if (next != null) {
             itemDtoWithDates.setNextBooking(BookingMapper.mapToBookingDtoDates(next));
+        }
+        if (comments != null) {
+            itemDtoWithDates.setComments(comments);
         }
         return itemDtoWithDates;
     }

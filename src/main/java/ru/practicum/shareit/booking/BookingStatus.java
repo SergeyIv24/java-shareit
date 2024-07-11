@@ -3,7 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.Getter;
 
 @Getter
-enum BookingStatus {
+public enum BookingStatus {
     WAITING(1),
     APPROVED(2),
     REJECTED(3);

@@ -2,7 +2,7 @@ package ru.practicum.shareit.booking;
 
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.dto.BookingDtoDates;
+import ru.practicum.shareit.booking.dto.BookingWithInfoDto;
 import ru.practicum.shareit.booking.dto.BookingRequest;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.model.Item;
@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
 @Component
 public class BookingMapper {
 
-    private static final ZoneId zoneUTC0 = ZoneId.of("UTC+3");
+    private static final ZoneId zoneUTC0 = ZoneId.of("UTC+3"); //Needs to return date with Moscow time zone
 
     public static BookingDto mapToBookingDto(Booking booking) {
         BookingDto bookingDto = new BookingDto();
@@ -23,15 +23,15 @@ public class BookingMapper {
         bookingDto.setItem(booking.getItem());
         bookingDto.setBooker(booking.getBooker());
         bookingDto.setStatus(booking.getStatus());
+        //Converting Instant without timezone to LocalDateTime with Moscow Zone
         bookingDto.setStart(LocalDateTime.ofInstant(booking.getStart(), ZoneId.of("Europe/Moscow")));
         bookingDto.setEnd(LocalDateTime.ofInstant(booking.getEnd(), ZoneId.of("Europe/Moscow")));
         return bookingDto;
     }
 
-    public static Booking mapToBooking(BookingDto bookingDto, Item item, User user) {
+/*    public static Booking mapToBooking(BookingDto bookingDto, Item item, User user) {
         ZoneOffset startOffset = zoneUTC0.getRules().getOffset(bookingDto.getStart());
         ZoneOffset endOffset = zoneUTC0.getRules().getOffset(bookingDto.getEnd());
-
         Booking booking = new Booking();
         booking.setId(bookingDto.getId());
         booking.setStart(bookingDto.getStart().toInstant(startOffset));
@@ -40,7 +40,7 @@ public class BookingMapper {
         booking.setBooker(user);
         booking.setStatus(bookingDto.getStatus());
         return booking;
-    }
+    }*/
 
     public static Booking mapToBooking(BookingRequest bookingRequest, Item item, User owner) {
         ZoneOffset startOffset = zoneUTC0.getRules().getOffset(bookingRequest.getStart());
@@ -55,8 +55,8 @@ public class BookingMapper {
         return booking;
     }
 
-    public static BookingDtoDates mapToBookingDtoDates(Booking booking) {
-        BookingDtoDates bookingDtoDates = new BookingDtoDates();
+    public static BookingWithInfoDto mapToBookingDtoDates(Booking booking) {
+        BookingWithInfoDto bookingDtoDates = new BookingWithInfoDto();
         bookingDtoDates.setId(booking.getId());
         bookingDtoDates.setItem(booking.getItem());
         bookingDtoDates.setBookerId(booking.getBooker().getId());
