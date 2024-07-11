@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking;
 
-import org.springframework.stereotype.Component;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingWithInfoDto;
 import ru.practicum.shareit.booking.dto.BookingRequest;
@@ -12,7 +13,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-@Component
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookingMapper {
 
     private static final ZoneId zoneUTC0 = ZoneId.of("UTC+3"); //Needs to return date with Moscow time zone
@@ -28,19 +30,6 @@ public class BookingMapper {
         bookingDto.setEnd(LocalDateTime.ofInstant(booking.getEnd(), ZoneId.of("Europe/Moscow")));
         return bookingDto;
     }
-
-/*    public static Booking mapToBooking(BookingDto bookingDto, Item item, User user) {
-        ZoneOffset startOffset = zoneUTC0.getRules().getOffset(bookingDto.getStart());
-        ZoneOffset endOffset = zoneUTC0.getRules().getOffset(bookingDto.getEnd());
-        Booking booking = new Booking();
-        booking.setId(bookingDto.getId());
-        booking.setStart(bookingDto.getStart().toInstant(startOffset));
-        booking.setEnd(bookingDto.getEnd().toInstant(endOffset));
-        booking.setItem(item);
-        booking.setBooker(user);
-        booking.setStatus(bookingDto.getStatus());
-        return booking;
-    }*/
 
     public static Booking mapToBooking(BookingRequest bookingRequest, Item item, User owner) {
         ZoneOffset startOffset = zoneUTC0.getRules().getOffset(bookingRequest.getStart());

@@ -45,7 +45,8 @@ public class BookingServiceImp implements BookingService {
 
         bookingRequest.setBooker(owner);
         bookingRequest.setStatus(String.valueOf(BookingStatus.WAITING));
-        return BookingMapper.mapToBookingDto(bookingRepository.save(BookingMapper.mapToBooking(bookingRequest, item, owner)));
+        return BookingMapper.mapToBookingDto(bookingRepository
+                .save(BookingMapper.mapToBooking(bookingRequest, item, owner)));
     }
 
     @Override
@@ -162,7 +163,7 @@ public class BookingServiceImp implements BookingService {
             throw new UnsupportedException("Unknown state: UNSUPPORTED_STATUS");
         }
     }
-    
+
     private void validateBookingApprovement(Long ownerId, Booking booking) {
         if (booking.getBooker().getId().equals(ownerId)) {
             throw new NotFoundException("Item does not belong to user");

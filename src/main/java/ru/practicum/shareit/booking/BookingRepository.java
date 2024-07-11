@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.booking.model.Booking;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
+    //Query methods
     List<Booking> findByBookerIdOrderByStartDesc(Long bookerId);
 
     List<Booking> findByBookerIdAndStatusOrderByStartDesc(Long bookerId, String status);
@@ -21,13 +23,13 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByBookerIdAndItemIdAndStatus(Long bookerId, Long itemId, String status);
 
+    //Natives queries where impossible to write query method
     @Query(value = "SELECT * FROM bookings " +
             "WHERE start_date <= ?2 " +
             "AND end_date >= ?2 " +
             "AND user_id = ?1 " +
             "ORDER BY start_date ASC ", nativeQuery = true)
     List<Booking> findCurrentBookings(Long bookerId, Instant now);
-
 
     @Query(value = "SELECT b.id, b.item_id, b.user_id, start_date, " +
             "end_date, status " +

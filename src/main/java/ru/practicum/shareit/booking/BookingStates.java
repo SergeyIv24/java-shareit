@@ -10,6 +10,4 @@ public enum BookingStates {
     CURRENT,
     WAITING,
     REJECTED
-
-
 }

@@ -13,8 +13,6 @@ import java.time.ZoneId;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentMapper {
 
-    //private static final ZoneId zoneUTC0 = ZoneId.of("UTC+3");
-
     public static CommentsDto mapToCommentDto(Comments comments) {
         CommentsDto commentsDto = new CommentsDto();
         commentsDto.setId(comments.getId());

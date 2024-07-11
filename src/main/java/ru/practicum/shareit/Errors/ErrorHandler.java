@@ -12,7 +12,7 @@ import ru.practicum.shareit.exceptions.ValidationException;
 
 //Return correct http code
 @RestControllerAdvice
-public class ErrorItemHandler {
+public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

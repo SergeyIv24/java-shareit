@@ -6,7 +6,6 @@ import ru.practicum.shareit.item.dto.ItemDtoWithDates;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Optional;
 
 public interface ItemService {
     ItemDto addItem(Long userId, ItemDto itemDto);

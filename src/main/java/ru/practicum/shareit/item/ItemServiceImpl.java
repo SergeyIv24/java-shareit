@@ -107,8 +107,8 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("item is not found"));
 
         List<Booking> bookingsByItemId = bookingRepository.findByBookerIdAndItemIdAndStatus(userId,
-                itemId,
-                String.valueOf(BookingStatus.APPROVED))
+                        itemId,
+                        String.valueOf(BookingStatus.APPROVED))
                 .stream()
                 .filter(booking -> booking.getStart().isBefore(Instant.now()))
                 .toList();
