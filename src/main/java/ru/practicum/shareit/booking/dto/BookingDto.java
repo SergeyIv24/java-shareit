@@ -3,7 +3,6 @@ package ru.practicum.shareit.booking.dto;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import ru.practicum.shareit.item.dto.ItemDtoWithDates;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 

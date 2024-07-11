@@ -35,11 +35,13 @@ public final class ItemMapper {
         itemDtoWithDates.setName(item.getName());
         itemDtoWithDates.setDescription(item.getDescription());
         itemDtoWithDates.setAvailable(item.getAvailable());
-        if (last == null && next == null) {
-            return itemDtoWithDates;
+
+        if (last != null) {
+            itemDtoWithDates.setLastBooking(BookingMapper.mapToBookingDtoDates(last));
         }
-        itemDtoWithDates.setLastBooking(BookingMapper.mapToBookingDtoDates(last));
-        itemDtoWithDates.setNextBooking(BookingMapper.mapToBookingDtoDates(next));
+        if (next != null) {
+            itemDtoWithDates.setNextBooking(BookingMapper.mapToBookingDtoDates(next));
+        }
         return itemDtoWithDates;
     }
 }

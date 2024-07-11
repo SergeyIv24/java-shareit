@@ -14,7 +14,7 @@ public interface ItemService {
 
     ItemDtoWithDates getItemById(Long itemId, Instant now, Long ownerId);
 
-    Collection<ItemDto> getMyItems(Long userId);
+    Collection<ItemDtoWithDates> getMyItems(Long userId, Instant now);
 
     Collection<ItemDto> searchByRequest(String text);
 

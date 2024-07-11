@@ -12,9 +12,9 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,16 +66,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemDto> getMyItems(Long userId) {
-        return itemRepository.findByUserId(userId)
-                .stream()
-                .map(ItemMapper::mapToItemDto)
-                .collect(Collectors.toList());
+    public Collection<ItemDtoWithDates> getMyItems(Long userId, Instant now) {
+        Collection<Item> items = itemRepository.findByUserIdOrderByIdAsc(userId);
+        Collection<ItemDtoWithDates> itemsWithDates = new ArrayList<>();
+
+        for (Item item : items) {
+            itemsWithDates.add(getItemById(item.getId(), now, userId));
+        }
+        return itemsWithDates;
     }
 
     @Override
     public Collection<ItemDto> searchByRequest(String text) {
-       if (text.isEmpty()) {
+        if (text.isEmpty()) {
             return List.of();
         }
 
@@ -87,7 +90,6 @@ public class ItemServiceImpl implements ItemService {
         return searchedItems.stream()
                 .map(ItemMapper::mapToItemDto)
                 .collect(Collectors.toList());
-
     }
 
     private void checkUser(Long userId) {

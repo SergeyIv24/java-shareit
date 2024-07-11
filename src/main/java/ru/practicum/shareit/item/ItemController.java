@@ -39,8 +39,8 @@ public class ItemController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDto> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
-        return itemServiceImpl.getMyItems(userId);
+    public Collection<ItemDtoWithDates> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+        return itemServiceImpl.getMyItems(userId, Instant.now());
     }
 
     @GetMapping("/search")

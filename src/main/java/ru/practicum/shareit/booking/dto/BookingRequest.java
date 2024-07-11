@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.TimeZone;
-import java.util.spi.TimeZoneNameProvider;
+
 
 @Data
 public class BookingRequest {

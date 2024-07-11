@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import ru.practicum.shareit.user.User;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "items")

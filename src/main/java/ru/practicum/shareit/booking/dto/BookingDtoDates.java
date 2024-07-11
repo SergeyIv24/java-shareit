@@ -20,5 +20,4 @@ public class BookingDtoDates {
     private Long bookerId; //Who takes item
     @NotNull
     private Item item;
-
 }
