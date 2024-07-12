@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequest;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -46,13 +46,13 @@ public class BookingController {
     @ResponseStatus(HttpStatus.OK)
     public List<BookingDto> getAllBookingsByUser(@RequestHeader(value = "X-Sharer-User-Id") Long userId,
                                                  @PathParam("state") String state) {
-        return bookingService.getBookingsByConditions(userId, state, Instant.now());
+        return bookingService.getBookingsByConditions(userId, state, LocalDateTime.now());
     }
 
     @GetMapping("/owner")
     @ResponseStatus(HttpStatus.OK)
     public List<BookingDto> getAllBookingsForOwner(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
                                                    @PathParam("state") String state) {
-        return bookingService.getBookingsForOwner(ownerId, state, Instant.now());
+        return bookingService.getBookingsForOwner(ownerId, state, LocalDateTime.now());
     }
 }

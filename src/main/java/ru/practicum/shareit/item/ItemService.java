@@ -4,7 +4,7 @@ import ru.practicum.shareit.item.dto.CommentsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithDates;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface ItemService {
@@ -12,9 +12,9 @@ public interface ItemService {
 
     ItemDto updateItem(Long itemId, Long ownerId, ItemDto item);
 
-    ItemDtoWithDates getItemById(Long itemId, Instant now, Long ownerId);
+    ItemDtoWithDates getItemById(Long itemId, LocalDateTime now, Long ownerId);
 
-    Collection<ItemDtoWithDates> getMyItems(Long userId, Instant now);
+    Collection<ItemDtoWithDates> getMyItems(Long userId, LocalDateTime now);
 
     Collection<ItemDto> searchByRequest(String text);
 

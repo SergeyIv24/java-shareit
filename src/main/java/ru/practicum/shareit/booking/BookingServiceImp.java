@@ -14,7 +14,8 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
-import java.time.Instant;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,7 +79,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getBookingsByConditions(Long userId, String states, Instant now) {
+    public List<BookingDto> getBookingsByConditions(Long userId, String states, LocalDateTime now) {
 
         if (states == null) {
             states = "ALL";
@@ -90,7 +91,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getBookingsForOwner(Long ownerId, String states, Instant now) {
+    public List<BookingDto> getBookingsForOwner(Long ownerId, String states, LocalDateTime now) {
 
         if (states == null) {
             states = "ALL";
@@ -106,7 +107,7 @@ public class BookingServiceImp implements BookingService {
 
     }
 
-    private List<BookingDto> getBookingsUseStates(Long userId, BookingStates states, Instant now) {
+    private List<BookingDto> getBookingsUseStates(Long userId, BookingStates states, LocalDateTime now) {
 
         List<Booking> bookings = switch (states) {
             case ALL -> bookingRepository.findByBookerIdOrderByStartDesc(userId);
@@ -123,7 +124,7 @@ public class BookingServiceImp implements BookingService {
         return bookings.stream().map(BookingMapper::mapToBookingDto).collect(Collectors.toList());
     }
 
-    private List<BookingDto> getBookingsUseStatesForOwner(Long userId, BookingStates states, Instant now) {
+    private List<BookingDto> getBookingsUseStatesForOwner(Long userId, BookingStates states, LocalDateTime now) {
 
         List<Booking> bookings = switch (states) {
             case ALL -> bookingRepository.findByOwnerIdOrderByStartDesc(userId);

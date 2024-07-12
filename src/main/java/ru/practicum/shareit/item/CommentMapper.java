@@ -7,8 +7,6 @@ import ru.practicum.shareit.item.model.Comments;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentMapper {
@@ -18,7 +16,7 @@ public class CommentMapper {
         commentsDto.setId(comments.getId());
         commentsDto.setText(comments.getText());
         commentsDto.setAuthorName(comments.getAuthor().getName());
-        commentsDto.setCreated(LocalDateTime.ofInstant(comments.getCreated(), ZoneId.of("Europe/Moscow")));
+        commentsDto.setCreated(comments.getCreated());
         return commentsDto;
     }
 

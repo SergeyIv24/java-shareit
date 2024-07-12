@@ -8,7 +8,7 @@ import ru.practicum.shareit.item.dto.CommentsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithDates;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @RestController
@@ -35,13 +35,13 @@ public class ItemController {
     @ResponseStatus(HttpStatus.OK)
     public ItemDtoWithDates getItemById(@PathVariable(value = "itemId") Long itemId,
                                         @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
-        return itemServiceImpl.getItemById(itemId, Instant.now(), ownerId);
+        return itemServiceImpl.getItemById(itemId, LocalDateTime.now(), ownerId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Collection<ItemDtoWithDates> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
-        return itemServiceImpl.getMyItems(userId, Instant.now());
+        return itemServiceImpl.getMyItems(userId, LocalDateTime.now());
     }
 
     @GetMapping("/search")

@@ -15,7 +15,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDtoWithDates getItemById(Long itemId, Instant now, Long ownerId) {
+    public ItemDtoWithDates getItemById(Long itemId, LocalDateTime now, Long ownerId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found"));
         List<CommentsDto> comments = commentRepository.findByItemId(itemId)
                 .stream()
@@ -75,7 +75,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemDtoWithDates> getMyItems(Long userId, Instant now) {
+    public Collection<ItemDtoWithDates> getMyItems(Long userId, LocalDateTime now) {
         Collection<Item> items = itemRepository.findByUserIdOrderByIdAsc(userId);
         Collection<ItemDtoWithDates> itemsWithDates = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class ItemServiceImpl implements ItemService {
                         itemId,
                         String.valueOf(BookingStatus.APPROVED))
                 .stream()
-                .filter(booking -> booking.getStart().isBefore(Instant.now()))
+                .filter(booking -> booking.getStart().isBefore(LocalDateTime.now()))
                 .toList();
 
         if (bookingsByItemId.isEmpty()) {
@@ -118,7 +118,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         Comments comment = CommentMapper.mapToComments(commentsDto, item, user);
-        comment.setCreated(Instant.now());
+        comment.setCreated(LocalDateTime.now());
         return CommentMapper.mapToCommentDto(commentRepository.save(comment));
     }
 

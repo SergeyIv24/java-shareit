@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import ru.practicum.shareit.user.User;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -29,5 +29,5 @@ public class Comments {
     private User author;
 
     @NotNull
-    private Instant created;
+    private LocalDateTime created;
 }
