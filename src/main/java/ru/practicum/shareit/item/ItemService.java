@@ -8,15 +8,15 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface ItemService {
-    ItemDto addItem(Long userId, ItemDto itemDto);
+    ItemDto addItem(long userId, ItemDto itemDto);
 
-    ItemDto updateItem(Long itemId, Long ownerId, ItemDto item);
+    ItemDto updateItem(long itemId, long ownerId, ItemDto item);
 
-    ItemDtoWithDates getItemById(Long itemId, LocalDateTime now, Long ownerId);
+    ItemDtoWithDates getItemById(long itemId, LocalDateTime now, long ownerId);
 
-    Collection<ItemDtoWithDates> getMyItems(Long userId, LocalDateTime now);
+    Collection<ItemDtoWithDates> getMyItems(long userId, LocalDateTime now);
 
     Collection<ItemDto> searchByRequest(String text);
 
-    CommentsDto addComment(Long userId, CommentsDto commentsDto, Long itemId);
+    CommentsDto addComment(long userId, CommentsDto commentsDto, long itemId);
 }

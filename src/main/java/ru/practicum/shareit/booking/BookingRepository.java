@@ -35,8 +35,9 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "end_date, status " +
             "FROM bookings AS b " +
             "JOIN items AS i ON b.item_id = i.item_id " +
+            "WHERE i.user_id = ?1 AND status IN ('APPROVED', 'WAITING') " +
             "GROUP BY b.id, i.user_id " +
-            "Having i.user_id = ?1 AND status IN ('APPROVED', 'WAITING') " +
+            //"Having i.user_id = ?1 AND status IN ('APPROVED', 'WAITING') " +
             "ORDER BY start_date DESC ", nativeQuery = true)
     List<Booking> findByOwnerIdOrderByStartDesc(Long userId);
 

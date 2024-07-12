@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommentRepository commentRepository;
 
     @Override
-    public ItemDto addItem(Long userId, ItemDto itemDto) {
+    public ItemDto addItem(long userId, ItemDto itemDto) {
         checkUser(userId);
         User itemOwner = userRepository.findById(userId).orElseThrow();
         Item addingItem = ItemMapper.mapToItem(itemDto);
@@ -39,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto updateItem(Long itemId, Long ownerId, ItemDto item) {
+    public ItemDto updateItem(long itemId, long ownerId, ItemDto item) {
         checkUser(ownerId);
         checkUsersItems(itemId, ownerId);
 
@@ -60,7 +60,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDtoWithDates getItemById(Long itemId, LocalDateTime now, Long ownerId) {
+    public ItemDtoWithDates getItemById(long itemId, LocalDateTime now, long ownerId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item is not found"));
         List<CommentsDto> comments = commentRepository.findByItemId(itemId)
                 .stream()
@@ -75,7 +75,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Collection<ItemDtoWithDates> getMyItems(Long userId, LocalDateTime now) {
+    public Collection<ItemDtoWithDates> getMyItems(long userId, LocalDateTime now) {
         Collection<Item> items = itemRepository.findByUserIdOrderByIdAsc(userId);
         Collection<ItemDtoWithDates> itemsWithDates = new ArrayList<>();
 
@@ -102,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public CommentsDto addComment(Long userId, CommentsDto commentsDto, Long itemId) {
+    public CommentsDto addComment(long userId, CommentsDto commentsDto, long itemId) {
         User user = checkUser(userId);
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("item is not found"));
 
@@ -123,12 +123,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-    private User checkUser(Long userId) {
+    private User checkUser(long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("user is not found"));
     }
 
-    private void checkUsersItems(Long itemId, Long ownerId) {
+    private void checkUsersItems(long itemId, long ownerId) {
         Item existedItem = itemRepository.findById(itemId)
                 .orElseThrow();
         if (!existedItem.getUser().getId().equals(ownerId)) {

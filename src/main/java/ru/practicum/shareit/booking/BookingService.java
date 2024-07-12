@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingService {
-    BookingDto addBookingRequest(Long userId, BookingRequest bookingRequest);
+    BookingDto addBookingRequest(long userId, BookingRequest bookingRequest);
 
-    BookingDto approveBooking(Long bookingId, Boolean approved, Long ownerId);
+    BookingDto approveBooking(long bookingId, Boolean approved, long ownerId);
 
-    BookingDto getBooking(Long bookingId, Long ownerId);
+    BookingDto getBooking(long bookingId, long ownerId);
 
-    List<BookingDto> getBookingsByConditions(Long userId, String states, LocalDateTime now);
+    List<BookingDto> getBookingsByConditions(long userId, String states, LocalDateTime now);
 
-    List<BookingDto> getBookingsForOwner(Long ownerId, String states, LocalDateTime now);
+    List<BookingDto> getBookingsForOwner(long ownerId, String states, LocalDateTime now);
 }

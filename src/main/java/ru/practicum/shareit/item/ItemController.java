@@ -19,28 +19,29 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto addItem(@RequestHeader(value = "X-Sharer-User-Id") Long userId, @Valid @RequestBody ItemDto itemDto) {
+    public ItemDto addItem(@RequestHeader(value = "X-Sharer-User-Id") long userId,
+                           @Valid @RequestBody ItemDto itemDto) {
         return itemServiceImpl.addItem(userId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto updateItem(@PathVariable(value = "itemId") Long itemId,
-                              @RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
+    public ItemDto updateItem(@PathVariable(value = "itemId") long itemId,
+                              @RequestHeader(value = "X-Sharer-User-Id") long ownerId,
                               @RequestBody ItemDto item) {
         return itemServiceImpl.updateItem(itemId, ownerId, item);
     }
 
     @GetMapping("/{itemId}")
     @ResponseStatus(HttpStatus.OK)
-    public ItemDtoWithDates getItemById(@PathVariable(value = "itemId") Long itemId,
-                                        @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
+    public ItemDtoWithDates getItemById(@PathVariable(value = "itemId") long itemId,
+                                        @RequestHeader(value = "X-Sharer-User-Id") long ownerId) {
         return itemServiceImpl.getItemById(itemId, LocalDateTime.now(), ownerId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ItemDtoWithDates> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+    public Collection<ItemDtoWithDates> getMyItems(@RequestHeader(value = "X-Sharer-User-Id") long userId) {
         return itemServiceImpl.getMyItems(userId, LocalDateTime.now());
     }
 
@@ -52,9 +53,9 @@ public class ItemController {
 
     @PostMapping("/{itemId}/comment")
     @ResponseStatus(HttpStatus.OK)
-    public CommentsDto addCommentToItem(@RequestHeader(value = "X-Sharer-User-Id") Long userId,
+    public CommentsDto addCommentToItem(@RequestHeader(value = "X-Sharer-User-Id") long userId,
                                         @Valid @RequestBody CommentsDto commentsDto,
-                                        @PathVariable(value = "itemId") Long itemId) {
+                                        @PathVariable(value = "itemId") long itemId) {
         return itemServiceImpl.addComment(userId, commentsDto, itemId);
     }
 }

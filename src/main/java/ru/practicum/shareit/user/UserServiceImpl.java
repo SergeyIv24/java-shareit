@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(Long userId, UserDto user) {
+    public UserDto updateUser(long userId, UserDto user) {
         user.setId(userId);
         validateUserEmailDuplicate(user);
 
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(Long userId) {
+    public UserDto getUserById(long userId) {
         return UserMapper.mapToUserDto(userRepository.findById(userId).orElseThrow(() -> new NotFoundException("user is not found")));
     }
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(long userId) {
         userRepository.deleteById(userId);
     }
 

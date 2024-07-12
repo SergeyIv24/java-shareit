@@ -22,36 +22,36 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto addRequestBooking(@RequestHeader(value = "X-Sharer-User-Id") Long userId,
+    public BookingDto addRequestBooking(@RequestHeader(value = "X-Sharer-User-Id") long userId,
                                         @Valid @RequestBody BookingRequest bookingRequest) {
         return bookingService.addBookingRequest(userId, bookingRequest);
     }
 
     @PatchMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto bookingConformation(@PathVariable(value = "bookingId") Long bookingId,
+    public BookingDto bookingConformation(@PathVariable(value = "bookingId") long bookingId,
                                           @PathParam("approved") Boolean approved,
-                                          @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
+                                          @RequestHeader(value = "X-Sharer-User-Id") long ownerId) {
         return bookingService.approveBooking(bookingId, approved, ownerId);
     }
 
     @GetMapping("/{bookingId}")
     @ResponseStatus(HttpStatus.OK)
-    public BookingDto getBookingById(@PathVariable(value = "bookingId") Long bookingId,
-                                     @RequestHeader(value = "X-Sharer-User-Id") Long ownerId) {
+    public BookingDto getBookingById(@PathVariable(value = "bookingId") long bookingId,
+                                     @RequestHeader(value = "X-Sharer-User-Id") long ownerId) {
         return bookingService.getBooking(bookingId, ownerId);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<BookingDto> getAllBookingsByUser(@RequestHeader(value = "X-Sharer-User-Id") Long userId,
+    public List<BookingDto> getAllBookingsByUser(@RequestHeader(value = "X-Sharer-User-Id") long userId,
                                                  @PathParam("state") String state) {
         return bookingService.getBookingsByConditions(userId, state, LocalDateTime.now());
     }
 
     @GetMapping("/owner")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookingDto> getAllBookingsForOwner(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
+    public List<BookingDto> getAllBookingsForOwner(@RequestHeader(value = "X-Sharer-User-Id") long ownerId,
                                                    @PathParam("state") String state) {
         return bookingService.getBookingsForOwner(ownerId, state, LocalDateTime.now());
     }

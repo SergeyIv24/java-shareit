@@ -28,7 +28,7 @@ public class BookingServiceImp implements BookingService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
-    public BookingDto addBookingRequest(Long userId, BookingRequest bookingRequest) {
+    public BookingDto addBookingRequest(long userId, BookingRequest bookingRequest) {
         validateData(bookingRequest);
         User owner = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found"));
         Item item = itemRepository
@@ -51,7 +51,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public BookingDto approveBooking(Long bookingId, Boolean approved, Long ownerId) {
+    public BookingDto approveBooking(long bookingId, Boolean approved, long ownerId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Booking is not found"));
         validateBookingApprovement(ownerId, booking);
@@ -67,7 +67,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public BookingDto getBooking(Long bookingId, Long ownerId) {
+    public BookingDto getBooking(long bookingId, long ownerId) {
         validateUser(ownerId);
         Booking booking = bookingRepository
                 .findById(bookingId).orElseThrow(() -> new NotFoundException("Booking is not found"));
@@ -79,7 +79,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getBookingsByConditions(Long userId, String states, LocalDateTime now) {
+    public List<BookingDto> getBookingsByConditions(long userId, String states, LocalDateTime now) {
 
         if (states == null) {
             states = "ALL";
@@ -91,7 +91,7 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getBookingsForOwner(Long ownerId, String states, LocalDateTime now) {
+    public List<BookingDto> getBookingsForOwner(long ownerId, String states, LocalDateTime now) {
 
         if (states == null) {
             states = "ALL";
@@ -107,7 +107,7 @@ public class BookingServiceImp implements BookingService {
 
     }
 
-    private List<BookingDto> getBookingsUseStates(Long userId, BookingStates states, LocalDateTime now) {
+    private List<BookingDto> getBookingsUseStates(long userId, BookingStates states, LocalDateTime now) {
 
         List<Booking> bookings = switch (states) {
             case ALL -> bookingRepository.findByBookerIdOrderByStartDesc(userId);
@@ -124,7 +124,7 @@ public class BookingServiceImp implements BookingService {
         return bookings.stream().map(BookingMapper::mapToBookingDto).collect(Collectors.toList());
     }
 
-    private List<BookingDto> getBookingsUseStatesForOwner(Long userId, BookingStates states, LocalDateTime now) {
+    private List<BookingDto> getBookingsUseStatesForOwner(long userId, BookingStates states, LocalDateTime now) {
 
         List<Booking> bookings = switch (states) {
             case ALL -> bookingRepository.findByOwnerIdOrderByStartDesc(userId);
@@ -153,7 +153,7 @@ public class BookingServiceImp implements BookingService {
         }
     }
 
-    private void validateUser(Long userId) {
+    private void validateUser(long userId) {
         userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found"));
     }
 
