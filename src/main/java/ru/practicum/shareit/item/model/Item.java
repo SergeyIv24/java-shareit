@@ -19,12 +19,10 @@ public class Item {
 
     @NotBlank
     @Size(max = 100, message = "Bad name length")
-    @Column(name = "name")
     String name;
 
     @NotBlank
     @Size(max = 200, message = "Bad description length")
-    @Column(name = "description")
     String description;
 
     @ManyToOne
@@ -32,6 +30,5 @@ public class Item {
     User user;
 
     @NotNull
-    @Column(name = "available")
     Boolean available;
 }

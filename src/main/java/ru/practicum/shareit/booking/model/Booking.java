@@ -33,6 +33,5 @@ public class Booking {
     @Column(name = "end_date")
     private Instant end;
 
-    @Column(name = "status")
     private String status;
 }

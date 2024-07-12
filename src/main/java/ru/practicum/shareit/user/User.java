@@ -18,11 +18,9 @@ public class User {
 
     @NotBlank(message = "Empty user name")
     @Size(min = 1, max = 20, message = "Bad user name length")
-    @Column(name = "name")
     private String name;
 
     @NotBlank(message = "Empty email name")
     @Email(message = "Is not correct email pattern")
-    @Column(name = "email")
     private String email;
 }
