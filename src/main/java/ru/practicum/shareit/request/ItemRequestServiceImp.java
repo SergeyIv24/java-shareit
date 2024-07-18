@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
+import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.user.User;
@@ -23,6 +24,7 @@ public class ItemRequestServiceImp implements ItemRequestService {
 
     private final ItemRequestRepository requestRepository;
     private final UserRepository userRepository;
+    private final ItemRequestMapper mapper;
 
     @Override
     public ItemRequestDto addRequest(long userId, ItemRequestDto itemRequestDto, LocalDateTime now) {
@@ -38,9 +40,15 @@ public class ItemRequestServiceImp implements ItemRequestService {
     public List<ItemRequestResponseDto> getMyRequests(long userId) {
         validateUser(userId);
         List<ItemRequest> requests = requestRepository.findByUserIdOrderByCreatedDesc(userId);
+
+        if (requests.isEmpty()) {
+            log.warn("User does not have any requests");
+            throw new NotFoundException("User does not have any requests");
+        }
+
         return requests
                 .stream()
-                .map(ItemRequestMapper::mapToItemRequestResponseDto)
+                .map(mapper::mapToItemRequestResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -50,14 +58,16 @@ public class ItemRequestServiceImp implements ItemRequestService {
         if (from == 0 || size == 0) {
             return requestRepository.findByUserIdNotOrderByCreatedDesc(userId)
                     .stream()
-                    .map(ItemRequestMapper::mapToItemRequestResponseDto)
+                    .map(mapper::mapToItemRequestResponseDto)
+                    //.map(ItemRequestMapper::mapToItemRequestResponseDto)
                     .collect(Collectors.toList());
         }
 
         return requestRepository.findByUserIdNotAndIdGreaterThanEqualOrderByCreatedDesc(userId, (from + 1))
                 .stream()
                 .limit(size)
-                .map(ItemRequestMapper::mapToItemRequestResponseDto)
+                .map(mapper::mapToItemRequestResponseDto)
+                //.map(ItemRequestMapper::mapToItemRequestResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -68,7 +78,8 @@ public class ItemRequestServiceImp implements ItemRequestService {
             log.warn("request is not exist");
             throw new NotFoundException("request is not exist");
         }
-        return ItemRequestMapper.mapToItemRequestResponseDto(request.get());
+        return mapper.mapToItemRequestResponseDto(request.get());
+        //return ItemRequestMapper.mapToItemRequestResponseDto(request.get());
     }
 
     //If user exists, will return user, If does not - exception

@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,20 +16,23 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    Long id;
+    private Long id;
 
     @NotBlank
     @Size(max = 100, message = "Bad name length")
-    String name;
+    private String name;
 
     @NotBlank
     @Size(max = 200, message = "Bad description length")
-    String description;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     @NotNull
-    Boolean available;
+    private Boolean available;
+    @Column(name = "request_id")
+
+    private Long requestId;
 }

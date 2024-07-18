@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,4 +18,6 @@ public class ItemDto {
     private String description;
     @NotNull
     private Boolean available;
+
+    private Long requestId;
 }

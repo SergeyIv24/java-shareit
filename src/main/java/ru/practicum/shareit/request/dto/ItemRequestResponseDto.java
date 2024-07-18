@@ -8,9 +8,10 @@ import java.util.List;
 
 @Data
 public class ItemRequestResponseDto {
-
+    private Long id;
     private String description;
     private LocalDateTime created;
+    private Long userId;
     private List<RequestedItemsDto> responses;
 
 

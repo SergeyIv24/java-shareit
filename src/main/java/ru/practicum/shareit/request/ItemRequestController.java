@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ import java.util.List;
  * TODO Sprint add-item-requests.
  */
 @RestController
-@RequestMapping(path = "/requests")
+@RequestMapping("/requests")
 @RequiredArgsConstructor
 public class ItemRequestController {
 

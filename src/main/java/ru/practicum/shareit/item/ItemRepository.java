@@ -14,6 +14,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findByUserIdOrderByIdAsc(Long userId);
 
+    List<Item> findByRequestId(Long requestId);
+
     @Query("select it " +
             "from Item as it " +
             "where (it.name ilike %?1% OR it.description ilike %?1%) " +
