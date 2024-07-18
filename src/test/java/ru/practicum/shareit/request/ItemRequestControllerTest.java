@@ -259,7 +259,7 @@ public class ItemRequestControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    //todo return all request, except user`s requests.
+    //return all request, except user`s requests.
     @Test
     void shouldGetAllRequest() throws Exception {
 
@@ -276,9 +276,5 @@ public class ItemRequestControllerTest {
                 .andExpect(jsonPath("$.[0].description", is(requestWithResponses3.getDescription()), String.class))
                 .andExpect(jsonPath("$.[0].created", is(requestWithResponses3.getCreated().toString()), LocalDateTime.class))
                 .andExpect(jsonPath("$.[0].responses", equalTo(List.of())));
-
-
     }
-
-
 }

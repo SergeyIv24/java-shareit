@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
-import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.user.User;
@@ -59,7 +58,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
             return requestRepository.findByUserIdNotOrderByCreatedDesc(userId)
                     .stream()
                     .map(mapper::mapToItemRequestResponseDto)
-                    //.map(ItemRequestMapper::mapToItemRequestResponseDto)
                     .collect(Collectors.toList());
         }
 
@@ -67,7 +65,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
                 .stream()
                 .limit(size)
                 .map(mapper::mapToItemRequestResponseDto)
-                //.map(ItemRequestMapper::mapToItemRequestResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +76,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
             throw new NotFoundException("request is not exist");
         }
         return mapper.mapToItemRequestResponseDto(request.get());
-        //return ItemRequestMapper.mapToItemRequestResponseDto(request.get());
     }
 
     //If user exists, will return user, If does not - exception
