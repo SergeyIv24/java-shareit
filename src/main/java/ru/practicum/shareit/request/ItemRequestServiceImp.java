@@ -2,6 +2,9 @@ package ru.practicum.shareit.request;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
@@ -53,19 +56,42 @@ public class ItemRequestServiceImp implements ItemRequestService {
 
     @Override
     public List<ItemRequestResponseDto> getRequests(int from, int size, long userId) {
+/*        validateUser(userId);
         validatePageSize(from, size);
-        if (from == 0 || size == 0) {
+        if (from == 0 && size == 0) {
             return requestRepository.findByUserIdNotOrderByCreatedDesc(userId)
                     .stream()
                     .map(mapper::mapToItemRequestResponseDto)
                     .collect(Collectors.toList());
         }
 
-        return requestRepository.findByUserIdNotAndIdGreaterThanEqualOrderByCreatedDesc(userId, (from + 1))
+        return requestRepository.findByUserIdNotAndIdGreaterThanEqualOrderByCreatedDesc(userId, from)
                 .stream()
                 .limit(size)
                 .map(mapper::mapToItemRequestResponseDto)
+                .collect(Collectors.toList());*/
+
+        validateUser(userId);
+        validatePageSize(from, size);
+        if (from == 0 && size == 0) {
+            return requestRepository.findByUserIdNotOrderByCreatedDesc(userId)
+                    .stream()
+                    .map(mapper::mapToItemRequestResponseDto)
+                    .collect(Collectors.toList());
+        }
+
+        Sort sortByCreated = Sort.by(Sort.Direction.DESC, "created");
+        Pageable pageable = PageRequest.of(from, size, sortByCreated);
+        return requestRepository.findByUserIdNot(userId, pageable)
+                .stream()
+                .map(mapper::mapToItemRequestResponseDto)
                 .collect(Collectors.toList());
+/*        return requestRepository.findAll(pageable)
+                .stream()
+                .map(mapper::mapToItemRequestResponseDto)
+                .collect(Collectors.toList());*/
+
+
     }
 
     @Override
