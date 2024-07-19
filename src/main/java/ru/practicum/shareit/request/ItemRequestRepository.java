@@ -12,7 +12,5 @@ public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> 
     //Find all request without belonging to user who sent request
     List<ItemRequest> findByUserIdNotOrderByCreatedDesc(long userId);
 
-    List<ItemRequest> findByUserIdNotAndIdGreaterThanEqualOrderByCreatedDesc(long userId, int from);
-
     List<ItemRequest> findByUserIdNot(long userId, Pageable pageable);
 }

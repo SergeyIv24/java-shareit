@@ -56,21 +56,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
 
     @Override
     public List<ItemRequestResponseDto> getRequests(int from, int size, long userId) {
-/*        validateUser(userId);
-        validatePageSize(from, size);
-        if (from == 0 && size == 0) {
-            return requestRepository.findByUserIdNotOrderByCreatedDesc(userId)
-                    .stream()
-                    .map(mapper::mapToItemRequestResponseDto)
-                    .collect(Collectors.toList());
-        }
-
-        return requestRepository.findByUserIdNotAndIdGreaterThanEqualOrderByCreatedDesc(userId, from)
-                .stream()
-                .limit(size)
-                .map(mapper::mapToItemRequestResponseDto)
-                .collect(Collectors.toList());*/
-
         validateUser(userId);
         validatePageSize(from, size);
         if (from == 0 && size == 0) {
@@ -86,12 +71,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
                 .stream()
                 .map(mapper::mapToItemRequestResponseDto)
                 .collect(Collectors.toList());
-/*        return requestRepository.findAll(pageable)
-                .stream()
-                .map(mapper::mapToItemRequestResponseDto)
-                .collect(Collectors.toList());*/
-
-
     }
 
     @Override
