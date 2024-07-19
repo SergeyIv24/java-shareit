@@ -76,8 +76,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<ItemDtoWithDates> getMyItems(long userId, LocalDateTime now) {
-        Collection<Item> items = itemRepository.findByUserIdOrderByIdAsc(userId);
-        Collection<ItemDtoWithDates> itemsWithDates = new ArrayList<>();
+        List<Item> items = itemRepository.findByUserIdOrderByIdAsc(userId);
+        List<ItemDtoWithDates> itemsWithDates = new ArrayList<>();
 
         for (Item item : items) {
             itemsWithDates.add(getItemById(item.getId(), now, userId));
