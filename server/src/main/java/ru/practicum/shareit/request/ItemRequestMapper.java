@@ -49,7 +49,7 @@ public class ItemRequestMapper {
                 .stream()
                 .map(ItemMapper::mapToRequestedItem)
                 .toList();
-        itemRequestResponseDto.setResponses(items);
+        itemRequestResponseDto.setItems(items);
         return itemRequestResponseDto;
     }
 }

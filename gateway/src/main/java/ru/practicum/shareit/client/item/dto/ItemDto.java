@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class ItemDto {
-    //private Long id;
     @NotBlank
     @Size(max = 100, message = "Bad name length")
     private String name;

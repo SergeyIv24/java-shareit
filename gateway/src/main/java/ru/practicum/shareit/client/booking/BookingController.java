@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.client.booking.dto.BookingRequest;
+import ru.practicum.shareit.client.exceptions.UnsupportedException;
 
 
 @RestController
@@ -41,6 +42,9 @@ public class BookingController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getAllBookingsByUser(@RequestHeader(value = "X-Sharer-User-Id") long userId,
                                                        @PathParam("state") String state) {
+        if (state != null) {
+            validateState(state);
+        }
         return bookingClient.getBookingsByConditions(userId, state);
     }
 
@@ -48,6 +52,17 @@ public class BookingController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getAllBookingsForOwner(@RequestHeader(value = "X-Sharer-User-Id") long ownerId,
                                                          @PathParam("state") String state) {
+        if (state != null) {
+            validateState(state);
+        }
         return bookingClient.getBookingsForOwner(ownerId, state);
+    }
+
+    private void validateState(String state) {
+        try {
+            BookingStates states = BookingStates.valueOf(state);
+        } catch (Throwable e) {
+            throw new UnsupportedException("Unknown state: UNSUPPORTED_STATUS");
+        }
     }
 }

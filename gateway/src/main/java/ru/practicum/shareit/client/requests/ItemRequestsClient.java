@@ -34,7 +34,7 @@ public class ItemRequestsClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getRequests(int from, int size, long userId) {
-        Map<String, Object> parameters = Map.of("from", from,"size", size);
+        Map<String, Object> parameters = Map.of("from", from, "size", size);
         return get("all?from={from}&size={size}", userId, parameters);
     }
 

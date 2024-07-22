@@ -19,7 +19,7 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ItemDto addItem(@RequestHeader(value = "X-Sharer-User-Id") long userId, //@Valid
+    public ItemDto addItem(@RequestHeader(value = "X-Sharer-User-Id") long userId,
                            @RequestBody ItemDto itemDto) {
         return itemServiceImpl.addItem(userId, itemDto);
     }

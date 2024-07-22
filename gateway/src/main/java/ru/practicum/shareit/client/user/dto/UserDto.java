@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class UserDto {
-    private Long id;
     @NotBlank(message = "Empty user name")
     @Size(min = 1, max = 20, message = "Bad user name length")
     private String name;

@@ -56,7 +56,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUserEmailDuplicate(UserDto user) {
-        boolean isDuplicateEmail = getAllUsers().stream().filter(user1 -> !user1.getId().equals(user.getId()) && user1.getEmail().equals(user.getEmail())).findFirst().isEmpty();
+        boolean isDuplicateEmail = getAllUsers().stream()
+                .filter(user1 -> !user1.getId().equals(user.getId())
+                        && user1.getEmail().equals(user.getEmail())).findFirst().isEmpty();
         if (!isDuplicateEmail) {
             log.warn("Email is existed");
             throw new ConflictException("DuplicateEmail");

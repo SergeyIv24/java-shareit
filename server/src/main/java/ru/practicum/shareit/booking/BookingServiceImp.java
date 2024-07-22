@@ -7,7 +7,6 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequest;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exceptions.NotFoundException;
-import ru.practicum.shareit.exceptions.UnsupportedException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.model.Item;
@@ -80,24 +79,12 @@ public class BookingServiceImp implements BookingService {
 
     @Override
     public List<BookingDto> getBookingsByConditions(long userId, String states, LocalDateTime now) {
-
-        if (states == null) {
-            states = "ALL";
-        }
-
-        validateState(states);
         validateUser(userId);
         return getBookingsUseStates(userId, BookingStates.valueOf(states), now);
     }
 
     @Override
     public List<BookingDto> getBookingsForOwner(long ownerId, String states, LocalDateTime now) {
-
-        if (states == null) {
-            states = "ALL";
-        }
-
-        validateState(states);
         validateUser(ownerId);
         List<Item> userItems = itemRepository.findByUserId(ownerId);
         if (userItems.isEmpty()) {
@@ -155,14 +142,6 @@ public class BookingServiceImp implements BookingService {
 
     private void validateUser(long userId) {
         userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User is not found"));
-    }
-
-    private void validateState(String state) {
-        try {
-            BookingStates states = BookingStates.valueOf(state);
-        } catch (Throwable e) {
-            throw new UnsupportedException("Unknown state: UNSUPPORTED_STATUS");
-        }
     }
 
     private void validateBookingApprovement(Long ownerId, Booking booking) {

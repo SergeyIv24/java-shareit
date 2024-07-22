@@ -57,7 +57,7 @@ public class ItemRequestServiceImp implements ItemRequestService {
     @Override
     public List<ItemRequestResponseDto> getRequests(int from, int size, long userId) {
         validateUser(userId);
-        validatePageSize(from, size);
+        //validatePageSize(from, size);
         if (from == 0 && size == 0) {
             return requestRepository.findByUserIdNotOrderByCreatedDesc(userId)
                     .stream()
@@ -93,13 +93,6 @@ public class ItemRequestServiceImp implements ItemRequestService {
         } else {
             log.warn("User is not existed");
             throw new NotFoundException("User is not existed");
-        }
-    }
-
-    private void validatePageSize(int from, int size) {
-        if (from < 0 || size < 0) {
-            log.warn("Bad sizes. From = " + from + " " + "size = " + size);
-            throw new ValidationException("Bad page`s size");
         }
     }
 }

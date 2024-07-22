@@ -162,9 +162,9 @@ public class ItemRequestServiceTest {
         assertThat(requests.get(1).getId(), equalTo(savedReq3.getId()));
         assertThat(requests.get(1).getUserId(), equalTo(savedReq3.getUserId()));
         assertThat(requests.get(1).getDescription(), equalTo(savedReq3.getDescription()));
-        assertThat(requests.get(1).getResponses().get(0).getId(), equalTo(savedItemBee.getId()));
-        assertThat(requests.get(1).getResponses().get(0).getName(), equalTo(savedItemBee.getName()));
-        assertThat(requests.get(1).getResponses().get(0).getOwnerId(), equalTo(savedItemBee.getUser().getId()));
+        assertThat(requests.get(1).getItems().get(0).getId(), equalTo(savedItemBee.getId()));
+        assertThat(requests.get(1).getItems().get(0).getName(), equalTo(savedItemBee.getName()));
+        assertThat(requests.get(1).getItems().get(0).getOwnerId(), equalTo(savedItemBee.getUser().getId()));
 
         assertThat(requests.get(2).getId(), equalTo(savedReq2.getId()));
         assertThat(requests.get(2).getUserId(), equalTo(savedReq2.getUserId()));
