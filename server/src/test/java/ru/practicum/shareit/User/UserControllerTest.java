@@ -57,19 +57,18 @@ public class UserControllerTest {
         when(userService.createUser(any())).thenReturn(userDto1);
 
         mvc.perform(post("/users")
-                .content(mapper.writeValueAsString(userDto1))
-                .characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(userDto1))
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(userDto1.getId()), Long.class))
                 .andExpect(jsonPath("$.name", is(userDto1.getName()), String.class))
                 .andExpect(jsonPath("$.email", is(userDto1.getEmail()), String.class));
-
     }
 
     @Test
-    void shouldUpdateUser() throws Exception  {
+    void shouldUpdateUser() throws Exception {
         userDto2.setName("Another Name");
         userDto2.setEmail("Another@Email.cooom");
 
@@ -77,25 +76,24 @@ public class UserControllerTest {
                 .thenReturn(userDto1);
 
         mvc.perform(patch("/users/1")
-                .content(mapper.writeValueAsString(userDto1))
-                .characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(mapper.writeValueAsString(userDto1))
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(userDto1.getId()), Long.class))
                 .andExpect(jsonPath("$.name", is(userDto1.getName()), String.class))
                 .andExpect(jsonPath("$.email", is(userDto1.getEmail()), String.class));
-
     }
 
     @Test
-    void shouldReturnUserById() throws Exception  {
+    void shouldReturnUserById() throws Exception {
         when(userService.getUserById(anyLong()))
                 .thenReturn(userDto1);
 
         mvc.perform(get("/users/1").characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(userDto1.getId()), Long.class))
                 .andExpect(jsonPath("$.name", is(userDto1.getName()), String.class))
@@ -103,14 +101,14 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldReturnAllUsers() throws Exception  {
+    void shouldReturnAllUsers() throws Exception {
 
         when(userService.getAllUsers())
                 .thenReturn(List.of(userDto1, userDto2));
 
         mvc.perform(get("/users").characterEncoding(StandardCharsets.UTF_8)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", is(userDto1.getId()), Long.class))
                 .andExpect(jsonPath("$.[0].name", is(userDto1.getName()), String.class))
@@ -118,17 +116,14 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.[1].id", is(userDto2.getId()), Long.class))
                 .andExpect(jsonPath("$.[1].name", is(userDto2.getName()), String.class))
                 .andExpect(jsonPath("$.[1].email", is(userDto2.getEmail()), String.class));
-
-
     }
 
     @Test
-    void shouldDeleteUser() throws Exception  {
+    void shouldDeleteUser() throws Exception {
         mvc.perform(delete("/users/1")
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-
 }

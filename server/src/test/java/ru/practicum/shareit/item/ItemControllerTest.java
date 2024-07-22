@@ -41,7 +41,8 @@ public class ItemControllerTest {
     private static ItemDto itemAsResponseToRequestDto;
 
     private static CommentsDto commentsDto;
-    private static LocalDateTime now = LocalDateTime.now();
+    private static final LocalDateTime time = LocalDateTime
+            .of(2024, 7, 22, 17, 12, 12, 12);
 
     @BeforeAll
     static void initializeSomeItems() {
@@ -65,7 +66,7 @@ public class ItemControllerTest {
         commentsDto.setId(1L);
         commentsDto.setText("Some text");
         commentsDto.setAuthorName("Some name");
-        commentsDto.setCreated(now);
+        commentsDto.setCreated(time);
     }
 
     @Test

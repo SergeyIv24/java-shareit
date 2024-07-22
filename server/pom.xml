@@ -75,7 +75,7 @@
 
     <profiles>
         <profile>
-            <id>coverage</id>
+            <id>check</id>
             <build>
                 <plugins>
                     <plugin>
