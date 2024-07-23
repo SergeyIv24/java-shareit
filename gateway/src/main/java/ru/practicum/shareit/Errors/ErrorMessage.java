@@ -1,4 +1,4 @@
-package ru.practicum.shareit.client.Errors;
+package ru.practicum.shareit.Errors;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,12 @@
-package ru.practicum.shareit.client.Errors;
+package ru.practicum.shareit.Errors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.client.exceptions.UnsupportedException;
-import ru.practicum.shareit.client.exceptions.ValidationException;
+import ru.practicum.shareit.exceptions.UnsupportedException;
+import ru.practicum.shareit.exceptions.ValidationException;
 
 //Return correct http code
 @RestControllerAdvice
