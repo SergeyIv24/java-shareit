@@ -148,25 +148,6 @@ public class ItemRequestControllerTest {
                 .addRequest(anyLong(), any(), any());
     }
 
-/*    @Test
-    void shouldNotCreateFailDescription() throws Exception {
-        when(itemRequestService.addRequest(anyLong(), any(), any()))
-                .thenThrow(NotFoundException.class);
-
-        mvc.perform(post("/requests")
-                        .content(mapper.writeValueAsString(notCorrectRequest))
-                        .header("X-Sharer-User-Id", 1L)
-                        .characterEncoding(StandardCharsets.UTF_8)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error", equalTo("Bad input data")));
-
-        Mockito.verify(itemRequestService, Mockito.never())
-                .addRequest(anyLong(), any(), any());
-
-    }*/
-
     @Test
     void shouldReturnRequestById() throws Exception {
         ItemRequestResponseDto requestResponse = new ItemRequestResponseDto();
