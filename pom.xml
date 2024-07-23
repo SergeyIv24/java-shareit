@@ -11,18 +11,19 @@
 
 	<groupId>ru.practicum</groupId>
 	<artifactId>shareit</artifactId>
+	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
-    <name>ShareIt</name>
+
+	<name>ShareIt</name>
 
 	<properties>
 		<java.version>21</java.version>
 	</properties>
 
-    <modules>
+	<modules>
 		<module>gateway</module>
-        <module>server</module>
+		<module>server</module>
 	</modules>
 
 	<build>
@@ -165,7 +166,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>check</id>
@@ -191,5 +191,4 @@
 			</reporting>
 		</profile>
 	</profiles>
-
 </project>
