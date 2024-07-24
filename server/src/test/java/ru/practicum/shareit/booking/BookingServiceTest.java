@@ -31,56 +31,56 @@ public class BookingServiceTest {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
-    private static User user1;
-    private static User user2;
+    private static User expectedUserAlex;
+    private static User expectedUserLeonard;
 
-    private static Item item1;
+    private static Item expectedItem;
 
-    private static BookingRequest bookingRequest;
-    private static BookingRequest futureBookingUser1;
-    private static BookingRequest futureBookingUser2;
+    private static BookingRequest expectedBookingRequest;
+    private static BookingRequest futureBookingUserFrom1;
+    private static BookingRequest futureBookingUserFrom2;
 
     private static LocalDateTime now = LocalDateTime.now();
 
     @BeforeAll
     static void setup() {
-        user1 = new User();
-        user1.setName("Alex");
-        user1.setEmail("Alex@Alex.ru");
+        expectedUserAlex = new User();
+        expectedUserAlex.setName("Alex");
+        expectedUserAlex.setEmail("Alex@Alex.ru");
 
-        user2 = new User();
-        user2.setName("Leonard");
-        user2.setEmail("Leonard@gmail.ru");
+        expectedUserLeonard = new User();
+        expectedUserLeonard.setName("Leonard");
+        expectedUserLeonard.setEmail("Leonard@gmail.ru");
 
-        item1 = new Item();
-        item1.setName("Elephant");
-        item1.setDescription("New Elephant");
-        item1.setAvailable(true);
+        expectedItem = new Item();
+        expectedItem.setName("Elephant");
+        expectedItem.setDescription("New Elephant");
+        expectedItem.setAvailable(true);
 
-        bookingRequest = new BookingRequest();
-        bookingRequest.setStart(now);
-        bookingRequest.setEnd(now.plusWeeks(10));
+        expectedBookingRequest = new BookingRequest();
+        expectedBookingRequest.setStart(now);
+        expectedBookingRequest.setEnd(now.plusWeeks(10));
 
-        futureBookingUser1 = new BookingRequest();
-        futureBookingUser1.setStart(now.plusWeeks(10));
-        futureBookingUser1.setEnd(now.plusWeeks(20));
+        futureBookingUserFrom1 = new BookingRequest();
+        futureBookingUserFrom1.setStart(now.plusWeeks(10));
+        futureBookingUserFrom1.setEnd(now.plusWeeks(20));
 
-        futureBookingUser2 = new BookingRequest();
-        futureBookingUser2.setStart(now.plusWeeks(50));
-        futureBookingUser2.setEnd(now.plusWeeks(100));
+        futureBookingUserFrom2 = new BookingRequest();
+        futureBookingUserFrom2.setStart(now.plusWeeks(50));
+        futureBookingUserFrom2.setEnd(now.plusWeeks(100));
     }
 
     @Test
     void shouldReturnBookingAfterCreating() {
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        User savedUser1 = userRepository.save(expectedUserAlex);
+        User savedUser2 = userRepository.save(expectedUserLeonard);
 
-        item1.setUser(user1);
-        Item savedItem = itemRepository.save(item1);
+        expectedItem.setUser(expectedUserAlex);
+        Item savedItem = itemRepository.save(expectedItem);
 
-        bookingRequest.setItemId(savedItem.getId());
-        BookingDto savedBooking = bookingService.addBookingRequest(savedUser2.getId(), bookingRequest);
+        expectedBookingRequest.setItemId(savedItem.getId());
+        BookingDto savedBooking = bookingService.addBookingRequest(savedUser2.getId(), expectedBookingRequest);
 
         assertThat(savedBooking.getId(), notNullValue());
         assertThat(savedBooking.getBooker().getId(), equalTo(savedUser2.getId()));
@@ -89,27 +89,27 @@ public class BookingServiceTest {
         BookingDto approveBookingByOwner =
                 bookingService.approveBooking(savedBooking.getId(), true, savedUser1.getId());
 
-        BookingDto gotBooking = bookingService.getBooking(savedBooking.getId(), user1.getId());
+        BookingDto gotBooking = bookingService.getBooking(savedBooking.getId(), expectedUserAlex.getId());
 
         assertThat(gotBooking.getId(), equalTo(approveBookingByOwner.getId()));
         assertThat(gotBooking.getStatus(), equalTo(String.valueOf(BookingStatus.APPROVED)));
-        assertThat(gotBooking.getBooker(), equalTo(user2));
+        assertThat(gotBooking.getBooker(), equalTo(expectedUserLeonard));
         assertThat(gotBooking.getStart(), equalTo(now));
     }
 
     @Test
     void shouldReturnFutureBookings() {
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        User savedUser1 = userRepository.save(expectedUserAlex);
+        User savedUser2 = userRepository.save(expectedUserLeonard);
 
-        item1.setUser(savedUser1);
-        Item savedItem = itemRepository.save(item1);
+        expectedItem.setUser(savedUser1);
+        Item savedItem = itemRepository.save(expectedItem);
 
-        futureBookingUser1.setItemId(savedItem.getId());
-        futureBookingUser2.setItemId(savedItem.getId());
+        futureBookingUserFrom1.setItemId(savedItem.getId());
+        futureBookingUserFrom2.setItemId(savedItem.getId());
 
-        BookingDto savedFutureBooking1 = bookingService.addBookingRequest(savedUser2.getId(), futureBookingUser1);
-        BookingDto savedFutureBooking2 = bookingService.addBookingRequest(savedUser2.getId(), futureBookingUser2);
+        BookingDto savedFutureBooking1 = bookingService.addBookingRequest(savedUser2.getId(), futureBookingUserFrom1);
+        BookingDto savedFutureBooking2 = bookingService.addBookingRequest(savedUser2.getId(), futureBookingUserFrom2);
 
         List<BookingDto> futureBookings = bookingService.getBookingsByConditions(savedUser2.getId(),
                 String.valueOf(BookingStates.FUTURE),

@@ -37,7 +37,7 @@ public class ItemControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    private static ItemDto itemDto1;
+    private static ItemDto expecteditemDto;
     private static ItemDto itemAsResponseToRequestDto;
 
     private static CommentsDto commentsDto;
@@ -46,11 +46,11 @@ public class ItemControllerTest {
 
     @BeforeAll
     static void setup() {
-        itemDto1 = new ItemDto();
-        itemDto1.setId(1L);
-        itemDto1.setName("Пакет для мусора");
-        itemDto1.setDescription("Один пакет");
-        itemDto1.setAvailable(true);
+        expecteditemDto = new ItemDto();
+        expecteditemDto.setId(1L);
+        expecteditemDto.setName("Пакет для мусора");
+        expecteditemDto.setDescription("Один пакет");
+        expecteditemDto.setAvailable(true);
 
         itemAsResponseToRequestDto = new ItemDto();
         itemAsResponseToRequestDto.setId(2L);
@@ -69,19 +69,19 @@ public class ItemControllerTest {
     @Test
     void shouldCreateItem() throws Exception {
         when(itemService.addItem(anyLong(), any()))
-                .thenReturn(itemDto1);
+                .thenReturn(expecteditemDto);
 
         mvc.perform(post("/items")
-                        .content(mapper.writeValueAsString(itemDto1))
+                        .content(mapper.writeValueAsString(expecteditemDto))
                         .header("X-Sharer-User-Id", 1L)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(itemDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.name", is(itemDto1.getName()), String.class))
-                .andExpect(jsonPath("$.description", is(itemDto1.getDescription()), String.class))
-                .andExpect(jsonPath("$.available", is(itemDto1.getAvailable()), Boolean.class));
+                .andExpect(jsonPath("$.id", is(expecteditemDto.getId()), Long.class))
+                .andExpect(jsonPath("$.name", is(expecteditemDto.getName()), String.class))
+                .andExpect(jsonPath("$.description", is(expecteditemDto.getDescription()), String.class))
+                .andExpect(jsonPath("$.available", is(expecteditemDto.getAvailable()), Boolean.class));
     }
 
     @Test
@@ -105,27 +105,27 @@ public class ItemControllerTest {
 
     @Test
     void shouldUpdateItem() throws Exception {
-        itemDto1.setName("another item");
-        itemDto1.setDescription("it was updated");
+        expecteditemDto.setName("another item");
+        expecteditemDto.setDescription("it was updated");
         when(itemService.updateItem(anyLong(), anyLong(), any()))
-                .thenReturn(itemDto1);
+                .thenReturn(expecteditemDto);
 
         mvc.perform(patch("/items/1")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("X-Sharer-User-Id", 1L)
-                        .content(mapper.writeValueAsString(itemDto1)))
+                        .content(mapper.writeValueAsString(expecteditemDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(itemDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.name", is(itemDto1.getName()), String.class))
-                .andExpect(jsonPath("$.description", is(itemDto1.getDescription()), String.class))
-                .andExpect(jsonPath("$.available", is(itemDto1.getAvailable()), Boolean.class));
+                .andExpect(jsonPath("$.id", is(expecteditemDto.getId()), Long.class))
+                .andExpect(jsonPath("$.name", is(expecteditemDto.getName()), String.class))
+                .andExpect(jsonPath("$.description", is(expecteditemDto.getDescription()), String.class))
+                .andExpect(jsonPath("$.available", is(expecteditemDto.getAvailable()), Boolean.class));
     }
 
     @Test
     void shouldReturnItemById() throws Exception {
-        Item item1 = ItemMapper.mapToItem(itemDto1);
-        item1.setId(itemDto1.getId());
+        Item item1 = ItemMapper.mapToItem(expecteditemDto);
+        item1.setId(expecteditemDto.getId());
         ItemDtoWithDates item1WithDates = ItemMapper
                 .mapToItemDtoWithDates(item1, null, null, null);
 
@@ -145,8 +145,8 @@ public class ItemControllerTest {
 
     @Test
     void shouldReturnUsersItems() throws Exception {
-        Item item1 = ItemMapper.mapToItem(itemDto1);
-        item1.setId(itemDto1.getId());
+        Item item1 = ItemMapper.mapToItem(expecteditemDto);
+        item1.setId(expecteditemDto.getId());
         Item itemAsResponseToRequest = ItemMapper.mapToItem(itemAsResponseToRequestDto);
         itemAsResponseToRequest.setId(itemAsResponseToRequestDto.getId());
         ItemDtoWithDates item1Dates =
@@ -193,17 +193,17 @@ public class ItemControllerTest {
     void shouldSearch() throws Exception {
 
         when(itemService.searchByRequest(anyString()))
-                .thenReturn(List.of(itemDto1, itemAsResponseToRequestDto));
+                .thenReturn(List.of(expecteditemDto, itemAsResponseToRequestDto));
 
         mvc.perform(get("/items/search")
                         .param("text", "Пакет")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(itemDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.[0].name", is(itemDto1.getName()), String.class))
-                .andExpect(jsonPath("$.[0].description", is(itemDto1.getDescription()), String.class))
-                .andExpect(jsonPath("$.[0].available", is(itemDto1.getAvailable()), Boolean.class))
+                .andExpect(jsonPath("$.[0].id", is(expecteditemDto.getId()), Long.class))
+                .andExpect(jsonPath("$.[0].name", is(expecteditemDto.getName()), String.class))
+                .andExpect(jsonPath("$.[0].description", is(expecteditemDto.getDescription()), String.class))
+                .andExpect(jsonPath("$.[0].available", is(expecteditemDto.getAvailable()), Boolean.class))
                 .andExpect(jsonPath("$.[1].id", is(itemAsResponseToRequestDto.getId()), Long.class))
                 .andExpect(jsonPath("$.[1].name", is(itemAsResponseToRequestDto.getName()), String.class))
                 .andExpect(jsonPath("$.[1].description", is(itemAsResponseToRequestDto.getDescription()), String.class))

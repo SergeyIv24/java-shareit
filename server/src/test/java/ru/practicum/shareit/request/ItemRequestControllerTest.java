@@ -41,14 +41,14 @@ public class ItemRequestControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    private static ItemRequestDto request1Correct;
+    private static ItemRequestDto requestCorrect;
     private static ItemRequestDto notCorrectRequest;
-    private static ItemRequestResponseDto requestWithResponses1;
-    private static ItemRequestResponseDto requestWithResponses2;
-    private static ItemRequestResponseDto requestWithResponses3;
-    private static ItemRequestResponseDto requestWithResponses4;
-    private static Item item1;
-    private static Item item2;
+    private static ItemRequestResponseDto requestWithResponsesId2;
+    private static ItemRequestResponseDto requestWithResponsesId3;
+    private static ItemRequestResponseDto requestWithResponsesId4;
+    private static ItemRequestResponseDto requestWithResponsesId5;
+    private static Item expectedItemHammer;
+    private static Item expectedAnotherItem;
 
     @BeforeAll
     static void setup() {
@@ -63,27 +63,27 @@ public class ItemRequestControllerTest {
         req1And2Owner.setName("Leo");
         req1And2Owner.setEmail("Leo@Email.com");
 
-        item1 = new Item();
-        item1.setId(1L);
-        item1.setUser(item1And2Owner);
-        item1.setName("Hammer");
-        item1.setDescription("Hammer");
-        item1.setAvailable(true);
-        item1.setRequestId(1L);
+        expectedItemHammer = new Item();
+        expectedItemHammer.setId(1L);
+        expectedItemHammer.setUser(item1And2Owner);
+        expectedItemHammer.setName("Hammer");
+        expectedItemHammer.setDescription("Hammer");
+        expectedItemHammer.setAvailable(true);
+        expectedItemHammer.setRequestId(1L);
 
-        item2 = new Item();
-        item2.setId(2L);
-        item2.setUser(item1And2Owner);
-        item2.setName("Another Hammer");
-        item2.setDescription("Hammer");
-        item2.setAvailable(true);
-        item2.setRequestId(1L);
+        expectedAnotherItem = new Item();
+        expectedAnotherItem.setId(2L);
+        expectedAnotherItem.setUser(item1And2Owner);
+        expectedAnotherItem.setName("Another Hammer");
+        expectedAnotherItem.setDescription("Hammer");
+        expectedAnotherItem.setAvailable(true);
+        expectedAnotherItem.setRequestId(1L);
 
-        request1Correct = new ItemRequestDto();
-        request1Correct.setId(1L);
-        request1Correct.setUserId(1L);
-        request1Correct.setDescription("I need some pans");
-        request1Correct.setCreated(LocalDateTime.of(2034, 12, 12, 12, 12, 12));
+        requestCorrect = new ItemRequestDto();
+        requestCorrect.setId(1L);
+        requestCorrect.setUserId(1L);
+        requestCorrect.setDescription("I need some pans");
+        requestCorrect.setCreated(LocalDateTime.of(2034, 12, 12, 12, 12, 12));
         notCorrectRequest = new ItemRequestDto();
 
         ItemRequestDto request2Correct = new ItemRequestDto();
@@ -92,52 +92,53 @@ public class ItemRequestControllerTest {
         request2Correct.setDescription("I need hammer");
         request2Correct.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
 
-        requestWithResponses1 = new ItemRequestResponseDto();
-        requestWithResponses1.setId(2L);
-        requestWithResponses1.setUserId(2L);
-        requestWithResponses1.setDescription("Tor`s hammer");
-        requestWithResponses1.setCreated(LocalDateTime.of(2034, 12, 12, 12, 12, 12));
-        requestWithResponses1.setItems(List.of(ItemMapper.mapToRequestedItem(item1), ItemMapper.mapToRequestedItem(item2)));
+        requestWithResponsesId2 = new ItemRequestResponseDto();
+        requestWithResponsesId2.setId(2L);
+        requestWithResponsesId2.setUserId(2L);
+        requestWithResponsesId2.setDescription("Tor`s hammer");
+        requestWithResponsesId2.setCreated(LocalDateTime.of(2034, 12, 12, 12, 12, 12));
+        requestWithResponsesId2.setItems(List.of(ItemMapper.mapToRequestedItem(expectedItemHammer),
+                ItemMapper.mapToRequestedItem(expectedAnotherItem)));
 
-        requestWithResponses2 = new ItemRequestResponseDto();
-        requestWithResponses2.setId(3L);
-        requestWithResponses2.setUserId(2L);
-        requestWithResponses2.setDescription("Drill");
-        requestWithResponses2.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
-        requestWithResponses2.setItems(List.of());
+        requestWithResponsesId3 = new ItemRequestResponseDto();
+        requestWithResponsesId3.setId(3L);
+        requestWithResponsesId3.setUserId(2L);
+        requestWithResponsesId3.setDescription("Drill");
+        requestWithResponsesId3.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
+        requestWithResponsesId3.setItems(List.of());
 
-        requestWithResponses3 = new ItemRequestResponseDto();
-        requestWithResponses3.setId(4L);
-        requestWithResponses3.setUserId(1L);
-        requestWithResponses3.setDescription("Window");
-        requestWithResponses3.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
-        requestWithResponses3.setItems(List.of());
+        requestWithResponsesId4 = new ItemRequestResponseDto();
+        requestWithResponsesId4.setId(4L);
+        requestWithResponsesId4.setUserId(1L);
+        requestWithResponsesId4.setDescription("Window");
+        requestWithResponsesId4.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
+        requestWithResponsesId4.setItems(List.of());
 
-        requestWithResponses4 = new ItemRequestResponseDto();
-        requestWithResponses4.setId(5L);
-        requestWithResponses4.setUserId(1L);
-        requestWithResponses4.setDescription("Window");
-        requestWithResponses4.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
-        requestWithResponses4.setItems(List.of());
+        requestWithResponsesId5 = new ItemRequestResponseDto();
+        requestWithResponsesId5.setId(5L);
+        requestWithResponsesId5.setUserId(1L);
+        requestWithResponsesId5.setDescription("Window");
+        requestWithResponsesId5.setCreated(LocalDateTime.of(2034, 12, 12, 14, 14, 14));
+        requestWithResponsesId5.setItems(List.of());
     }
 
     @Test
     void shouldCreateNewItemRequest() throws Exception {
 
         when(itemRequestService.addRequest(anyLong(), any(), any()))
-                .thenReturn(request1Correct);
+                .thenReturn(requestCorrect);
 
         mvc.perform(post("/requests")
-                        .content(mapper.writeValueAsString(request1Correct))
+                        .content(mapper.writeValueAsString(requestCorrect))
                         .header("X-Sharer-User-Id", 1L)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(request1Correct.getId()), Long.class))
-                .andExpect(jsonPath("$.userId", is(request1Correct.getUserId()), Long.class))
-                .andExpect(jsonPath("$.description", is(request1Correct.getDescription()), String.class))
-                .andExpect(jsonPath("$.created", is(request1Correct.getCreated().toString()),
+                .andExpect(jsonPath("$.id", is(requestCorrect.getId()), Long.class))
+                .andExpect(jsonPath("$.userId", is(requestCorrect.getUserId()), Long.class))
+                .andExpect(jsonPath("$.description", is(requestCorrect.getDescription()), String.class))
+                .andExpect(jsonPath("$.created", is(requestCorrect.getCreated().toString()),
                         LocalDateTime.class));
 
         Mockito.verify(itemRequestService, Mockito.times(1))
@@ -147,8 +148,8 @@ public class ItemRequestControllerTest {
     @Test
     void shouldReturnRequestById() throws Exception {
         ItemRequestResponseDto requestResponse = new ItemRequestResponseDto();
-        requestResponse.setDescription(request1Correct.getDescription());
-        requestResponse.setCreated(request1Correct.getCreated());
+        requestResponse.setDescription(requestCorrect.getDescription());
+        requestResponse.setCreated(requestCorrect.getCreated());
         requestResponse.setItems(List.of());
 
         when(itemRequestService.getRequestById(anyLong()))
@@ -200,7 +201,7 @@ public class ItemRequestControllerTest {
     void shouldReturnAllUsersRequests() throws Exception {
 
         when(itemRequestService.getMyRequests(anyLong()))
-                .thenReturn(List.of(requestWithResponses1, requestWithResponses2));
+                .thenReturn(List.of(requestWithResponsesId2, requestWithResponsesId3));
 
         mvc.perform(get("/requests")
                         .header("X-Sharer-User-Id", 2L)
@@ -208,14 +209,14 @@ public class ItemRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(requestWithResponses1.getId()), Long.class))
-                .andExpect(jsonPath("$.[0].description", is(requestWithResponses1.getDescription()), String.class))
-                .andExpect(jsonPath("$.[0].created", is(requestWithResponses1.getCreated().toString()), LocalDateTime.class))
-                .andExpect(jsonPath("$.[0].items.[0].id", is(requestWithResponses1.getItems().get(0).getId()), Long.class))
-                .andExpect(jsonPath("$.[0].items.[0].name", is(requestWithResponses1.getItems().get(0).getName()), String.class))
-                .andExpect(jsonPath("$.[0].items.[0].ownerId", is(requestWithResponses1.getItems().get(0).getOwnerId()), Long.class))
-                .andExpect(jsonPath("$.[1].description", is(requestWithResponses2.getDescription()), String.class))
-                .andExpect(jsonPath("$.[1].created", is(requestWithResponses2.getCreated().toString()), LocalDateTime.class))
+                .andExpect(jsonPath("$.[0].id", is(requestWithResponsesId2.getId()), Long.class))
+                .andExpect(jsonPath("$.[0].description", is(requestWithResponsesId2.getDescription()), String.class))
+                .andExpect(jsonPath("$.[0].created", is(requestWithResponsesId2.getCreated().toString()), LocalDateTime.class))
+                .andExpect(jsonPath("$.[0].items.[0].id", is(requestWithResponsesId2.getItems().get(0).getId()), Long.class))
+                .andExpect(jsonPath("$.[0].items.[0].name", is(requestWithResponsesId2.getItems().get(0).getName()), String.class))
+                .andExpect(jsonPath("$.[0].items.[0].ownerId", is(requestWithResponsesId2.getItems().get(0).getOwnerId()), Long.class))
+                .andExpect(jsonPath("$.[1].description", is(requestWithResponsesId3.getDescription()), String.class))
+                .andExpect(jsonPath("$.[1].created", is(requestWithResponsesId3.getCreated().toString()), LocalDateTime.class))
                 .andExpect(jsonPath("$.[1].items", equalTo(List.of())));
 
 
@@ -241,7 +242,7 @@ public class ItemRequestControllerTest {
     void shouldGetAllRequest() throws Exception {
 
         when(itemRequestService.getRequests(anyInt(), anyInt(), anyLong()))
-                .thenReturn(List.of(requestWithResponses3));
+                .thenReturn(List.of(requestWithResponsesId4));
 
         mvc.perform(get("/requests/all")
                         .header("X-Sharer-User-Id", 2L)
@@ -249,9 +250,9 @@ public class ItemRequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(requestWithResponses3.getId()), Long.class))
-                .andExpect(jsonPath("$.[0].description", is(requestWithResponses3.getDescription()), String.class))
-                .andExpect(jsonPath("$.[0].created", is(requestWithResponses3.getCreated().toString()), LocalDateTime.class))
+                .andExpect(jsonPath("$.[0].id", is(requestWithResponsesId4.getId()), Long.class))
+                .andExpect(jsonPath("$.[0].description", is(requestWithResponsesId4.getDescription()), String.class))
+                .andExpect(jsonPath("$.[0].created", is(requestWithResponsesId4.getCreated().toString()), LocalDateTime.class))
                 .andExpect(jsonPath("$.[0].items", equalTo(List.of())));
     }
 }

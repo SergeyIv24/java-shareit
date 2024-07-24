@@ -30,50 +30,50 @@ public class ItemServiceTest {
     private final ItemService itemService;
     private final UserRepository userRepository;
 
-    private static User user1;
-    private static User user2;
+    private static User userAlex;
+    private static User userLeonardo;
 
-    private static ItemDto itemDto1User1;
-    private static ItemDto itemDto2User1;
-    private static ItemDto itemDto3User1;
-    private static ItemDto itemDto4User2;
+    private static ItemDto userAlexsItemDtoHammer;
+    private static ItemDto userAlexsItemDtoPot;
+    private static ItemDto userAlexsItemDtoTable;
+    private static ItemDto userLeonardsItemDtoBox;
 
     @BeforeAll
     static void setup() {
-        user1 = new User();
-        user1.setName("Alex");
-        user1.setEmail("Alex@Alex.ru");
+        userAlex = new User();
+        userAlex.setName("Alex");
+        userAlex.setEmail("Alex@Alex.ru");
 
-        user2 = new User();
-        user2.setName("Leonard");
-        user2.setEmail("Leonard@gmail.ru");
+        userLeonardo = new User();
+        userLeonardo.setName("Leonard");
+        userLeonardo.setEmail("Leonard@gmail.ru");
 
-        itemDto1User1 = new ItemDto();
-        itemDto1User1.setName("Hammer");
-        itemDto1User1.setDescription("New good hammer");
-        itemDto1User1.setAvailable(true);
+        userAlexsItemDtoHammer = new ItemDto();
+        userAlexsItemDtoHammer.setName("Hammer");
+        userAlexsItemDtoHammer.setDescription("New good hammer");
+        userAlexsItemDtoHammer.setAvailable(true);
 
-        itemDto2User1 = new ItemDto();
-        itemDto2User1.setName("Pot");
-        itemDto2User1.setDescription("For tea");
-        itemDto2User1.setAvailable(true);
+        userAlexsItemDtoPot = new ItemDto();
+        userAlexsItemDtoPot.setName("Pot");
+        userAlexsItemDtoPot.setDescription("For tea");
+        userAlexsItemDtoPot.setAvailable(true);
 
-        itemDto3User1 = new ItemDto();
-        itemDto3User1.setName("Table");
-        itemDto3User1.setDescription("for eating");
-        itemDto3User1.setAvailable(true);
+        userAlexsItemDtoTable = new ItemDto();
+        userAlexsItemDtoTable.setName("Table");
+        userAlexsItemDtoTable.setDescription("for eating");
+        userAlexsItemDtoTable.setAvailable(true);
 
-        itemDto4User2 = new ItemDto();
-        itemDto4User2.setName("Box");
-        itemDto4User2.setDescription("to store things");
-        itemDto4User2.setAvailable(true);
+        userLeonardsItemDtoBox = new ItemDto();
+        userLeonardsItemDtoBox.setName("Box");
+        userLeonardsItemDtoBox.setDescription("to store things");
+        userLeonardsItemDtoBox.setAvailable(true);
     }
 
     @Test
     void shouldReturnItemByIdAfterCreatingAndUpdating() {
-        User savedUser = userRepository.save(user1);
-        itemDto1User1.setName("Hammer");
-        ItemDto savedItem = itemService.addItem(savedUser.getId(), itemDto1User1);
+        User savedUser = userRepository.save(userAlex);
+        userAlexsItemDtoHammer.setName("Hammer");
+        ItemDto savedItem = itemService.addItem(savedUser.getId(), userAlexsItemDtoHammer);
 
         assertThat(savedItem.getId(), notNullValue());
         assertThat(savedItem.getName(), equalTo("Hammer"));
@@ -103,12 +103,12 @@ public class ItemServiceTest {
 
     @Test
     void shouldReturnUsersItems() {
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        User savedUser1 = userRepository.save(userAlex);
+        User savedUser2 = userRepository.save(userLeonardo);
 
-        ItemDto savedItem1User1 = itemService.addItem(savedUser1.getId(), itemDto1User1);
-        ItemDto savedItem2User1 = itemService.addItem(savedUser1.getId(), itemDto2User1);
-        ItemDto savedItem3User1 = itemService.addItem(savedUser1.getId(), itemDto3User1);
+        ItemDto savedItem1User1 = itemService.addItem(savedUser1.getId(), userAlexsItemDtoHammer);
+        ItemDto savedItem2User1 = itemService.addItem(savedUser1.getId(), userAlexsItemDtoPot);
+        ItemDto savedItem3User1 = itemService.addItem(savedUser1.getId(), userAlexsItemDtoTable);
 
         //User2 does not have items
         assertThat(itemService.getMyItems(savedUser2.getId(), LocalDateTime.now()), equalTo(List.of()));
@@ -128,14 +128,14 @@ public class ItemServiceTest {
 
     @Test
     void shouldFindItem() {
-        User savedUser1 = userRepository.save(user1);
+        User savedUser1 = userRepository.save(userAlex);
 
-        itemDto1User1.setName("FiNd   Me");
-        itemDto2User1.setDescription("FIND me too");
+        userAlexsItemDtoHammer.setName("FiNd   Me");
+        userAlexsItemDtoPot.setDescription("FIND me too");
 
-        ItemDto savedItem1User1 = itemService.addItem(savedUser1.getId(), itemDto1User1);
-        ItemDto savedItem2User1 = itemService.addItem(savedUser1.getId(), itemDto2User1);
-        ItemDto savedItem3User1 = itemService.addItem(savedUser1.getId(), itemDto3User1);
+        ItemDto savedItem1User1 = itemService.addItem(savedUser1.getId(), userAlexsItemDtoHammer);
+        ItemDto savedItem2User1 = itemService.addItem(savedUser1.getId(), userAlexsItemDtoPot);
+        ItemDto savedItem3User1 = itemService.addItem(savedUser1.getId(), userAlexsItemDtoTable);
 
         List<ItemDto> searchedItems = itemService.searchByRequest("FInd").stream().toList();
 

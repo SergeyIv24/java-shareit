@@ -28,7 +28,7 @@ public class UserServiceTest {
     private static User user;
 
     @BeforeAll
-    static void createUser() {
+    static void setup() {
         user = new User();
         user.setName("Test");
         user.setEmail("Testov@test.test");

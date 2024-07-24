@@ -36,86 +36,86 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    private static UserDto userDto1;
-    private static UserDto userDto2;
+    private static UserDto expectedUserDto;
+    private static UserDto expectedAnotherUserDto;
 
     @BeforeAll
-    static void createUsers() {
-        userDto1 = new UserDto();
-        userDto1.setId(1L);
-        userDto1.setName("Test1");
-        userDto1.setEmail("Test1@test.com");
+    static void setUp() {
+        expectedUserDto = new UserDto();
+        expectedUserDto.setId(1L);
+        expectedUserDto.setName("Test1");
+        expectedUserDto.setEmail("Test1@test.com");
 
-        userDto2 = new UserDto();
-        userDto2.setId(2L);
-        userDto2.setName("Test2");
-        userDto2.setEmail("Test2@test.com");
+        expectedAnotherUserDto = new UserDto();
+        expectedAnotherUserDto.setId(2L);
+        expectedAnotherUserDto.setName("Test2");
+        expectedAnotherUserDto.setEmail("Test2@test.com");
     }
 
     @Test
     void shouldCreateUser() throws Exception {
-        when(userService.createUser(any())).thenReturn(userDto1);
+        when(userService.createUser(any())).thenReturn(expectedUserDto);
 
         mvc.perform(post("/users")
-                        .content(mapper.writeValueAsString(userDto1))
+                        .content(mapper.writeValueAsString(expectedUserDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(userDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.name", is(userDto1.getName()), String.class))
-                .andExpect(jsonPath("$.email", is(userDto1.getEmail()), String.class));
+                .andExpect(jsonPath("$.id", is(expectedUserDto.getId()), Long.class))
+                .andExpect(jsonPath("$.name", is(expectedUserDto.getName()), String.class))
+                .andExpect(jsonPath("$.email", is(expectedUserDto.getEmail()), String.class));
     }
 
     @Test
     void shouldUpdateUser() throws Exception {
-        userDto2.setName("Another Name");
-        userDto2.setEmail("Another@Email.cooom");
+        expectedAnotherUserDto.setName("Another Name");
+        expectedAnotherUserDto.setEmail("Another@Email.cooom");
 
         when(userService.updateUser(anyLong(), any()))
-                .thenReturn(userDto1);
+                .thenReturn(expectedUserDto);
 
         mvc.perform(patch("/users/1")
-                        .content(mapper.writeValueAsString(userDto1))
+                        .content(mapper.writeValueAsString(expectedUserDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(userDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.name", is(userDto1.getName()), String.class))
-                .andExpect(jsonPath("$.email", is(userDto1.getEmail()), String.class));
+                .andExpect(jsonPath("$.id", is(expectedUserDto.getId()), Long.class))
+                .andExpect(jsonPath("$.name", is(expectedUserDto.getName()), String.class))
+                .andExpect(jsonPath("$.email", is(expectedUserDto.getEmail()), String.class));
     }
 
     @Test
     void shouldReturnUserById() throws Exception {
         when(userService.getUserById(anyLong()))
-                .thenReturn(userDto1);
+                .thenReturn(expectedUserDto);
 
         mvc.perform(get("/users/1").characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(userDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.name", is(userDto1.getName()), String.class))
-                .andExpect(jsonPath("$.email", is(userDto1.getEmail()), String.class));
+                .andExpect(jsonPath("$.id", is(expectedUserDto.getId()), Long.class))
+                .andExpect(jsonPath("$.name", is(expectedUserDto.getName()), String.class))
+                .andExpect(jsonPath("$.email", is(expectedUserDto.getEmail()), String.class));
     }
 
     @Test
     void shouldReturnAllUsers() throws Exception {
 
         when(userService.getAllUsers())
-                .thenReturn(List.of(userDto1, userDto2));
+                .thenReturn(List.of(expectedUserDto, expectedAnotherUserDto));
 
         mvc.perform(get("/users").characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id", is(userDto1.getId()), Long.class))
-                .andExpect(jsonPath("$.[0].name", is(userDto1.getName()), String.class))
-                .andExpect(jsonPath("$.[0].email", is(userDto1.getEmail()), String.class))
-                .andExpect(jsonPath("$.[1].id", is(userDto2.getId()), Long.class))
-                .andExpect(jsonPath("$.[1].name", is(userDto2.getName()), String.class))
-                .andExpect(jsonPath("$.[1].email", is(userDto2.getEmail()), String.class));
+                .andExpect(jsonPath("$.[0].id", is(expectedUserDto.getId()), Long.class))
+                .andExpect(jsonPath("$.[0].name", is(expectedUserDto.getName()), String.class))
+                .andExpect(jsonPath("$.[0].email", is(expectedUserDto.getEmail()), String.class))
+                .andExpect(jsonPath("$.[1].id", is(expectedAnotherUserDto.getId()), Long.class))
+                .andExpect(jsonPath("$.[1].name", is(expectedAnotherUserDto.getName()), String.class))
+                .andExpect(jsonPath("$.[1].email", is(expectedAnotherUserDto.getEmail()), String.class));
     }
 
     @Test

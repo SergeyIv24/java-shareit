@@ -36,16 +36,16 @@ public class ItemRequestServiceTest {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
-    private static User user;
-    private static User userWithRequests;
-    private static User anotherUser;
+    private static User expectedUser;
+    private static User expectedUserWithRequests;
+    private static User expectedAnotherUser;
 
-    private static ItemRequestDto requestDto1;
-    private static ItemRequestDto req1;
-    private static ItemRequestDto req2;
-    private static ItemRequestDto req3;
-    private static ItemRequestDto req4;
-    private static ItemRequestDto req5;
+    private static ItemRequestDto expectedRequestDto;
+    private static ItemRequestDto expectedRequestDrill;
+    private static ItemRequestDto expectedRequestCar;
+    private static ItemRequestDto expectedRequestBee;
+    private static ItemRequestDto expectedRequestBrush;
+    private static ItemRequestDto expectedRequestBicycle;
 
     private static Item itemForReq3FromAnotherUser;
 
@@ -54,39 +54,39 @@ public class ItemRequestServiceTest {
 
     @BeforeAll
     static void setup() {
-        user = new User();
-        user.setId(1L);
-        user.setName("Test Testovich");
-        user.setEmail("Test@Test.ru");
+        expectedUser = new User();
+        expectedUser.setId(1L);
+        expectedUser.setName("Test Testovich");
+        expectedUser.setEmail("Test@Test.ru");
 
-        userWithRequests = new User();
-        userWithRequests.setName("SomeName");
-        userWithRequests.setEmail("SomeEmail@some111.com");
+        expectedUserWithRequests = new User();
+        expectedUserWithRequests.setName("SomeName");
+        expectedUserWithRequests.setEmail("SomeEmail@some111.com");
 
-        anotherUser = new User();
-        anotherUser.setName("iiL");
-        anotherUser.setEmail("II@gmail.com");
+        expectedAnotherUser = new User();
+        expectedAnotherUser.setName("iiL");
+        expectedAnotherUser.setEmail("II@gmail.com");
 
-        requestDto1 = new ItemRequestDto();
-        requestDto1.setId(1L);
-        requestDto1.setUserId(user.getId());
-        requestDto1.setDescription("Test Drrill");
-        requestDto1.setCreated(LocalDateTime.of(2222, 12, 12, 12, 12, 12));
+        expectedRequestDto = new ItemRequestDto();
+        expectedRequestDto.setId(1L);
+        expectedRequestDto.setUserId(expectedUser.getId());
+        expectedRequestDto.setDescription("Test Drrill");
+        expectedRequestDto.setCreated(LocalDateTime.of(2222, 12, 12, 12, 12, 12));
 
-        req1 = new ItemRequestDto();
-        req1.setDescription("Gime drill");
+        expectedRequestDrill = new ItemRequestDto();
+        expectedRequestDrill.setDescription("Gime drill");
 
-        req2 = new ItemRequestDto();
-        req2.setDescription("I wanna take car");
+        expectedRequestCar = new ItemRequestDto();
+        expectedRequestCar.setDescription("I wanna take car");
 
-        req3 = new ItemRequestDto();
-        req3.setDescription("Find bee for me");
+        expectedRequestBee = new ItemRequestDto();
+        expectedRequestBee.setDescription("Find bee for me");
 
-        req4 = new ItemRequestDto();
-        req4.setDescription("Find brush for me");
+        expectedRequestBrush = new ItemRequestDto();
+        expectedRequestBrush.setDescription("Find brush for me");
 
-        req5 = new ItemRequestDto();
-        req5.setDescription("Find bicycle for me");
+        expectedRequestBicycle = new ItemRequestDto();
+        expectedRequestBicycle.setDescription("Find bicycle for me");
 
         itemForReq3FromAnotherUser = new Item();
         itemForReq3FromAnotherUser.setName("Bee");
@@ -97,13 +97,13 @@ public class ItemRequestServiceTest {
     @Test
     void shouldThrowNotFoundIfUserIsNotExisted() {
         Assertions.assertThrows(NotFoundException.class,
-                () -> itemRequestService.addRequest(badUserId, requestDto1, now));
+                () -> itemRequestService.addRequest(badUserId, expectedRequestDto, now));
     }
 
     @Test
     void shouldAddRequest() {
-        User returnedUser = userRepository.save(user);
-        ItemRequestDto addedRequest = itemRequestService.addRequest(returnedUser.getId(), requestDto1, now);
+        User returnedUser = userRepository.save(expectedUser);
+        ItemRequestDto addedRequest = itemRequestService.addRequest(returnedUser.getId(), expectedRequestDto, now);
         TypedQuery<ItemRequest> query =
                 em.createQuery("SELECT ir FROM ItemRequest ir WHERE id = :id", ItemRequest.class);
         ItemRequest requestFromDataBase = query.setParameter("id", addedRequest.getId()).getSingleResult();
@@ -131,13 +131,13 @@ public class ItemRequestServiceTest {
 
     @Test
     void shouldGetUsersRequests() {
-        User savedUserWithRequests = userRepository.save(userWithRequests);
-        User savedAnotherUser = userRepository.save(anotherUser);
+        User savedUserWithRequests = userRepository.save(expectedUserWithRequests);
+        User savedAnotherUser = userRepository.save(expectedAnotherUser);
 
-        ItemRequestDto savedReq1 = itemRequestService.addRequest(savedUserWithRequests.getId(), req1, now.minusDays(3));
-        ItemRequestDto savedReq2 = itemRequestService.addRequest(savedUserWithRequests.getId(), req2, now.minusDays(15));
-        ItemRequestDto savedReq3 = itemRequestService.addRequest(savedUserWithRequests.getId(), req3, now.minusDays(5));
-        ItemRequestDto savedReq4 = itemRequestService.addRequest(savedAnotherUser.getId(), req4, now.minusDays(7));
+        ItemRequestDto savedReq1 = itemRequestService.addRequest(savedUserWithRequests.getId(), expectedRequestDrill, now.minusDays(3));
+        ItemRequestDto savedReq2 = itemRequestService.addRequest(savedUserWithRequests.getId(), expectedRequestCar, now.minusDays(15));
+        ItemRequestDto savedReq3 = itemRequestService.addRequest(savedUserWithRequests.getId(), expectedRequestBee, now.minusDays(5));
+        ItemRequestDto savedReq4 = itemRequestService.addRequest(savedAnotherUser.getId(), expectedRequestBrush, now.minusDays(7));
 
         itemForReq3FromAnotherUser.setUser(savedAnotherUser);
         itemForReq3FromAnotherUser.setRequestId(savedReq3.getId());
@@ -169,17 +169,6 @@ public class ItemRequestServiceTest {
         user.setName("Test");
         user.setEmail("UserTestAnother@Mail.com");
         User savedUser = userRepository.save(user);
-/*        int badFrom = -1;
-        Assertions.assertThrows(ValidationException.class,
-                () -> itemRequestService.getRequests(badFrom, 2, savedUser.getId()));
-
-        int badSize = -1;
-        Assertions.assertThrows(ValidationException.class,
-                () -> itemRequestService.getRequests(1, badSize, savedUser.getId()));
-
-        Assertions.assertThrows(ValidationException.class,
-                () -> itemRequestService.getRequests(badFrom, badSize, savedUser.getId()));*/
-
         int failedUserId = 1000;
         Assertions.assertThrows(NotFoundException.class,
                 () -> itemRequestService.getRequests(0, 0, failedUserId));
@@ -187,14 +176,14 @@ public class ItemRequestServiceTest {
 
     @Test
     void shouldGetAllRequestExceptUsersRequests() {
-        User savedUserWithRequests = userRepository.save(userWithRequests);
-        User savedAnotherUser = userRepository.save(anotherUser);
+        User savedUserWithRequests = userRepository.save(expectedUserWithRequests);
+        User savedAnotherUser = userRepository.save(expectedAnotherUser);
 
-        ItemRequestDto savedReq1 = itemRequestService.addRequest(savedUserWithRequests.getId(), req1, now.minusDays(3));
-        ItemRequestDto savedReq2 = itemRequestService.addRequest(savedUserWithRequests.getId(), req2, now.minusDays(15));
-        ItemRequestDto savedReq3 = itemRequestService.addRequest(savedUserWithRequests.getId(), req3, now.minusDays(5));
-        ItemRequestDto savedReq4 = itemRequestService.addRequest(savedAnotherUser.getId(), req4, now.minusDays(7));
-        ItemRequestDto savedReq5 = itemRequestService.addRequest(savedAnotherUser.getId(), req5, now.minusDays(100));
+        ItemRequestDto savedReq1 = itemRequestService.addRequest(savedUserWithRequests.getId(), expectedRequestDrill, now.minusDays(3));
+        ItemRequestDto savedReq2 = itemRequestService.addRequest(savedUserWithRequests.getId(), expectedRequestCar, now.minusDays(15));
+        ItemRequestDto savedReq3 = itemRequestService.addRequest(savedUserWithRequests.getId(), expectedRequestBee, now.minusDays(5));
+        ItemRequestDto savedReq4 = itemRequestService.addRequest(savedAnotherUser.getId(), expectedRequestBrush, now.minusDays(7));
+        ItemRequestDto savedReq5 = itemRequestService.addRequest(savedAnotherUser.getId(), expectedRequestBicycle, now.minusDays(100));
 
         List<ItemRequestResponseDto> anotherUsersRequests =
                 itemRequestService.getRequests(1, 1, savedUserWithRequests.getId());
