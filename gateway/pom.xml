@@ -10,7 +10,6 @@
 
     <artifactId>shareit-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
     <name>ShareIt Gateway</name>
 
@@ -65,35 +64,94 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-<!--            <plugin> &lt;!&ndash; добавляем плагин в сборку модуля musrec-ui&ndash;&gt;
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration> &lt;!&ndash; раздел настроек плагина &ndash;&gt;
-                    <descriptorRefs> &lt;!&ndash; раздел, в котором перечисляются дескрипторы, описывающие, что и как нужно упаковывать &ndash;&gt;
-                        &lt;!&ndash; используем готовый дескриптор в составе плагина, который формирует jar-файл с классами внешних зависимостей &ndash;&gt;
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive> &lt;!&ndash; настройки jar-файла &ndash;&gt;
-                        <manifest>
-                            <mainClass> &lt;!&ndash; указываем входную точку приложения &ndash;&gt;
-                                ru.practicum.shareit.ShareItGateway
-                            </mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-
-                <executions> &lt;!&ndash; настраиваем когда плагин будет запускаться &ndash;&gt;
-                    <execution> &lt;!&ndash; будет только один запуск, поэтому описываем только один элемент execution &ndash;&gt;
-                        <phase>package</phase> &lt;!&ndash; плагин будет запускаться в фазе package, которая относится к циклу Default &ndash;&gt;
-                        <goals>
-                            <goal>single</goal> &lt;!&ndash; во время фазы package должна отработать цель single, которую предоставляет плагин &ndash;&gt;
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
-
         </plugins>
     </build>
+
 </project>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>ru.practicum</groupId>
+        <artifactId>shareit</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>shareit-gateway</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+   &lt;!&ndash; <packaging>jar</packaging>
+&ndash;&gt;
+    <name>ShareIt Gateway</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>-->
