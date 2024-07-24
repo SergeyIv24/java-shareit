@@ -1,4 +1,4 @@
-package ru.practicum.shareit.client.booking;
+package ru.practicum.shareit.booking;
 
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.client.booking.dto.BookingRequest;
-import ru.practicum.shareit.client.exceptions.UnsupportedException;
+import ru.practicum.shareit.booking.dto.BookingRequest;
+import ru.practicum.shareit.exceptions.UnsupportedException;
 
 
 @RestController

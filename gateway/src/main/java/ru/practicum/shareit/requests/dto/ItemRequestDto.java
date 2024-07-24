@@ -1,4 +1,4 @@
-package ru.practicum.shareit.client.requests.dto;
+package ru.practicum.shareit.requests.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
