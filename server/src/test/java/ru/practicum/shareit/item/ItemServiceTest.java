@@ -39,7 +39,7 @@ public class ItemServiceTest {
     private static ItemDto itemDto4User2;
 
     @BeforeAll
-    static void createUsers() {
+    static void setup() {
         user1 = new User();
         user1.setName("Alex");
         user1.setEmail("Alex@Alex.ru");
@@ -48,10 +48,6 @@ public class ItemServiceTest {
         user2.setName("Leonard");
         user2.setEmail("Leonard@gmail.ru");
 
-    }
-
-    @BeforeAll
-    static void createItems() {
         itemDto1User1 = new ItemDto();
         itemDto1User1.setName("Hammer");
         itemDto1User1.setDescription("New good hammer");

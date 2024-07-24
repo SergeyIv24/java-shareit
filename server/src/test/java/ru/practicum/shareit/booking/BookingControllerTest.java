@@ -48,7 +48,7 @@ public class BookingControllerTest {
             .of(2024, 7, 22, 17, 12, 12, 12);
 
     @BeforeAll
-    static void createBookings() {
+    static void setup() {
         bookingRequest1 = new BookingRequest();
         bookingRequest1.setItemId(1L);
         bookingRequest1.setStart(time.plusWeeks(1));
@@ -71,10 +71,7 @@ public class BookingControllerTest {
         bookingDto4.setStart(time.plusWeeks(7));
         bookingDto4.setEnd(time.plusWeeks(8));
         bookingDto4.setItem(item1);
-    }
 
-    @BeforeAll
-    static void createItemsAndUsers() {
         user1 = new User();
         user1.setId(1L);
         user1.setName("Test");

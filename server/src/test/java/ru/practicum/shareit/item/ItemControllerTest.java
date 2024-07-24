@@ -45,7 +45,7 @@ public class ItemControllerTest {
             .of(2024, 7, 22, 17, 12, 12, 12);
 
     @BeforeAll
-    static void initializeSomeItems() {
+    static void setup() {
         itemDto1 = new ItemDto();
         itemDto1.setId(1L);
         itemDto1.setName("Пакет для мусора");
@@ -58,10 +58,7 @@ public class ItemControllerTest {
         itemAsResponseToRequestDto.setDescription("Для других пакетов");
         itemAsResponseToRequestDto.setAvailable(true);
         itemAsResponseToRequestDto.setRequestId(1L);
-    }
 
-    @BeforeAll
-    static void createComment() {
         commentsDto = new CommentsDto();
         commentsDto.setId(1L);
         commentsDto.setText("Some text");

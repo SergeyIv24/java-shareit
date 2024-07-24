@@ -51,7 +51,7 @@ public class ItemRequestControllerTest {
     private static Item item2;
 
     @BeforeAll
-    static void initializeSomeItems() {
+    static void setup() {
 
         User item1And2Owner = new User();
         item1And2Owner.setId(1L);
@@ -78,11 +78,7 @@ public class ItemRequestControllerTest {
         item2.setDescription("Hammer");
         item2.setAvailable(true);
         item2.setRequestId(1L);
-    }
 
-
-    @BeforeAll
-    static void initializeSomeRequests() {
         request1Correct = new ItemRequestDto();
         request1Correct.setId(1L);
         request1Correct.setUserId(1L);

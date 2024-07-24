@@ -53,7 +53,7 @@ public class ItemRequestServiceTest {
     private final long badUserId = 10000L;
 
     @BeforeAll
-    static void createUsers() {
+    static void setup() {
         user = new User();
         user.setId(1L);
         user.setName("Test Testovich");
@@ -66,10 +66,7 @@ public class ItemRequestServiceTest {
         anotherUser = new User();
         anotherUser.setName("iiL");
         anotherUser.setEmail("II@gmail.com");
-    }
 
-    @BeforeAll
-    static void createRequests() {
         requestDto1 = new ItemRequestDto();
         requestDto1.setId(1L);
         requestDto1.setUserId(user.getId());
@@ -90,16 +87,12 @@ public class ItemRequestServiceTest {
 
         req5 = new ItemRequestDto();
         req5.setDescription("Find bicycle for me");
-    }
 
-    @BeforeAll
-    static void createItems() {
         itemForReq3FromAnotherUser = new Item();
         itemForReq3FromAnotherUser.setName("Bee");
         itemForReq3FromAnotherUser.setDescription("My bee");
         itemForReq3FromAnotherUser.setAvailable(true);
     }
-
 
     @Test
     void shouldThrowNotFoundIfUserIsNotExisted() {

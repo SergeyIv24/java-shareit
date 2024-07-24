@@ -70,21 +70,6 @@ public class BookingServiceTest {
         futureBookingUser2.setEnd(now.plusWeeks(100));
     }
 
-    @BeforeAll
-    static void createUsers() {
-
-    }
-
-    @BeforeAll
-    static void createItems() {
-
-    }
-
-    @BeforeAll
-    static void createBookingRequests() {
-
-    }
-
     @Test
     void shouldReturnBookingAfterCreating() {
 
