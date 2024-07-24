@@ -44,23 +44,23 @@ public class BookingDtoTest {
         expectedBookingDto.setEnd(dataTime.plusWeeks(2));
         expectedBookingDto.setStatus("Approved");
 
-        JsonContent<BookingDto> JsonBookingDto = json.write(expectedBookingDto);
+        JsonContent<BookingDto> jsonBookingDto = json.write(expectedBookingDto);
 
-        assertThat(JsonBookingDto).extractingJsonPathNumberValue("$.id").isEqualTo(1);
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.item.id").isEqualTo(1);
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.item.name")
+        assertThat(jsonBookingDto).extractingJsonPathNumberValue("$.id").isEqualTo(1);
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.item.id").isEqualTo(1);
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.item.name")
                 .isEqualTo(expectedBookingDto.getItem().getName());
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.item.description")
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.item.description")
                 .isEqualTo(expectedBookingDto.getItem().getDescription());
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.item.available")
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.item.available")
                 .isEqualTo(expectedBookingDto.getItem().getAvailable());
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.booker.id")
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.booker.id")
                 .isEqualTo(1);
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.booker.name")
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.booker.name")
                 .isEqualTo(expectedBookingDto.getBooker().getName());
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.start")
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.start")
                 .isEqualTo(expectedBookingDto.getStart().toString());
-        assertThat(JsonBookingDto).extractingJsonPathValue("$.end")
+        assertThat(jsonBookingDto).extractingJsonPathValue("$.end")
                 .isEqualTo(expectedBookingDto.getEnd().toString());
     }
 }
