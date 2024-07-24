@@ -8,6 +8,8 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.json.JsonContent;
 import ru.practicum.shareit.user.dto.UserDto;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @JsonTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserDtoTest {
@@ -23,9 +25,9 @@ public class UserDtoTest {
         expectedUserDto.setEmail("Testovich@e.com");
 
         JsonContent<UserDto> result = json.write(expectedUserDto);
-
-
-
+        assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
+        assertThat(result).extractingJsonPathStringValue("$.name").isEqualTo(expectedUserDto.getName());
+        assertThat(result).extractingJsonPathStringValue("$.email").isEqualTo(expectedUserDto.getEmail());
     }
 
 }
