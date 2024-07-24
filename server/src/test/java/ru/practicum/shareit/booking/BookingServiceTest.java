@@ -43,7 +43,7 @@ public class BookingServiceTest {
     private static LocalDateTime now = LocalDateTime.now();
 
     @BeforeAll
-    static void createUsers() {
+    static void setup() {
         user1 = new User();
         user1.setName("Alex");
         user1.setEmail("Alex@Alex.ru");
@@ -51,18 +51,12 @@ public class BookingServiceTest {
         user2 = new User();
         user2.setName("Leonard");
         user2.setEmail("Leonard@gmail.ru");
-    }
 
-    @BeforeAll
-    static void createItems() {
         item1 = new Item();
         item1.setName("Elephant");
         item1.setDescription("New Elephant");
         item1.setAvailable(true);
-    }
 
-    @BeforeAll
-    static void createBookingRequests() {
         bookingRequest = new BookingRequest();
         bookingRequest.setStart(now);
         bookingRequest.setEnd(now.plusWeeks(10));
@@ -74,6 +68,21 @@ public class BookingServiceTest {
         futureBookingUser2 = new BookingRequest();
         futureBookingUser2.setStart(now.plusWeeks(50));
         futureBookingUser2.setEnd(now.plusWeeks(100));
+    }
+
+    @BeforeAll
+    static void createUsers() {
+
+    }
+
+    @BeforeAll
+    static void createItems() {
+
+    }
+
+    @BeforeAll
+    static void createBookingRequests() {
+
     }
 
     @Test
