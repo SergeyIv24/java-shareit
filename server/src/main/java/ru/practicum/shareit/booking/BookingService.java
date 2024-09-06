@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingService {
-    BookingDto addBookingRequest(long userId, BookingRequest bookingRequest);
+    BookingDto addBookingRequest(long userId, BookingRequest bookcingRequest);
 
     BookingDto approveBooking(long bookingId, Boolean approved, long ownerId);
 
